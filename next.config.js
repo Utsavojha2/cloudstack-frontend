@@ -3,4 +3,14 @@ const nextConfig = {
   reactStrictMode: true,
 }
 
-module.exports = nextConfig
+module.exports = {
+  ...nextConfig,
+  compiler: {
+    styledComponents: true,
+  },
+  resolve: {
+    alias: {
+      '@mui/styled-engine': '@mui/styled-engine-sc',
+    },
+  },
+}
