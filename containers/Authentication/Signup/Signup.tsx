@@ -28,7 +28,7 @@ const registerValidationSchema: SchemaOf<RegisterAuth> = object().shape({
     .required('Password confirmation is required')
     .oneOf([ref('password'), null], 'Confirm Password does not match'),
   birthDate: date()
-    .required('Birthdate is required')
+    .required('Date of birth is required')
     .transform(parseDateString)
     .max(new Date(), 'Invalid birthdate')
     .test('birthDate', 'Must be at least 16 years old', (birthDate) => {

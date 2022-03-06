@@ -9,27 +9,25 @@ import { string, object, SchemaOf } from 'yup'
 import { H1, H3 } from 'components/common/Typography/Typography'
 import InputForm from 'components/form/InputForm/InputForm'
 import { MuiPrimaryButton } from 'components/common/Buttons/Buttons'
-import { LoginAuth } from 'types/auth'
 import Link from 'next/link'
 
-const loginValidationSchema: SchemaOf<LoginAuth> = object().shape({
-  email: string().required('Email is required').email('Email is invalid'),
-  password: string()
-    .required('Password is required')
-    .min(6, 'Password must be at least 6 characters')
-    .max(40, 'Password must not exceed 40 characters'),
-})
+type ForgotPasswordSchema = { email: string }
+
+const forgotPasswordValidationSchema: SchemaOf<ForgotPasswordSchema> =
+  object().shape({
+    email: string().required('Email is required').email('Email is invalid'),
+  })
 
 const Login = () => {
-  const methods = useForm<LoginAuth>({
+  const methods = useForm<ForgotPasswordSchema>({
     mode: 'onChange',
-    resolver: yupResolver(loginValidationSchema),
+    resolver: yupResolver(forgotPasswordValidationSchema),
     shouldFocusError: true,
     criteriaMode: 'all',
     reValidateMode: 'onChange',
   })
 
-  const onUserLogin = (data: LoginAuth) => {
+  const onUserLogin = (data: ForgotPasswordSchema) => {
     console.log(data)
   }
 
@@ -41,28 +39,20 @@ const Login = () => {
         <FormProvider {...methods}>
           <LoginForm onSubmit={methods.handleSubmit(onUserLogin)}>
             <InputForm label="Email" name="email" />
-            <InputForm label="Password" name="password" />
             <MuiPrimaryButton type="submit">
               <LoginOutlinedIcon sx={{ mr: 1 }} />
-              Login
+              Reset Password
             </MuiPrimaryButton>
           </LoginForm>
         </FormProvider>
       </Box>
       <CardActions>
-        <CardFooterText>
+        <CreateAccountText>
           Don&apos;t have an account yet?
           <Link href="/signup">
             <a>CREATE HERE</a>
           </Link>
-        </CardFooterText>
-      </CardActions>
-      <CardActions>
-        <CardFooterText>
-          <Link href="/forgot-password">
-            <a>Forgot Password?</a>
-          </Link>
-        </CardFooterText>
+        </CreateAccountText>
       </CardActions>
     </CardContent>
   )
@@ -75,7 +65,7 @@ const LoginForm = styled.form`
   row-gap: 20px;
 `
 
-const CardFooterText = styled(H3)`
+const CreateAccountText = styled(H3)`
   ${({ theme }) => `
     text-align: center;
     width: 100%;
