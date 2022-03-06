@@ -1,13 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
 import Grid from '@mui/material/Grid'
-import { CardActions, CardContent, Card } from '@mui/material'
-import { H1 } from 'components/common/Typography/Typography'
 import { URL } from 'utils/static'
+import { Card } from '@mui/material'
 
-const AuthLayout = () => {
+interface AuthLayoutProps {
+  children: React.ReactNode
+}
+
+const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
   return (
-    <Grid container spacing={10} justifyContent="cente">
+    <Grid
+      container
+      spacing={{ md: 10 }}
+      justifyContent="center"
+      sx={{ minHeight: '100vh' }}
+    >
       <Grid
         item
         md={6}
@@ -19,10 +27,7 @@ const AuthLayout = () => {
       </Grid>
       <LoginBoxGrid item xs={12} md={6}>
         <LoginBoxCard sx={{ mt: 25, mr: { xs: 0, md: 5 } }}>
-          <CardContent>
-            <H1>Word of the Day</H1>
-          </CardContent>
-          <CardActions></CardActions>
+          {children}
         </LoginBoxCard>
       </LoginBoxGrid>
     </Grid>
@@ -30,26 +35,45 @@ const AuthLayout = () => {
 }
 
 const BackgroundImageLoginPage = styled.div`
-  background-image: url(${URL.loginPage});
-  background-size: contain;
-  background-position: center;
-  min-height: 100vh;
+  ${({ theme }) => `
+   background-image: url(${URL.loginPage});
+   background-size: contain;
+   background-position: center;
+   min-height: 100vh;
 
-  @media screen and (max-width: 1460px) {
-    background-size: cover;
-  }
+   ${theme.breakpoints.down('xl')}{
+     background-size: cover;
+   }
+  `};
 `
 
 const LoginBoxGrid = styled(Grid)`
   ${({ theme }) => `
-      background: ${theme.palette.primary.contrastText};
+      background: ${theme.palette.grey[100]};
   `};
 `
 
 const LoginBoxCard = styled(Card)`
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
+  ${({ theme }) => `
+    max-width: 500px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    ${theme.breakpoints.up('xs')}{
+        margin-left: 20px;
+        margin-right: 20px;   
+    }
+    ${theme.breakpoints.up('sm')}{
+        margin-left: auto;
+        margin-right: auto;   
+    }
+    ${theme.breakpoints.up('md')}{
+       margin-left: 0px;
+       margin-right: 30px;
+    }
+    ${theme.breakpoints.up('lg')}{
+        margin-left: auto;
+        margin-right: auto;     
+    }
+  `};
 `
 
 export default AuthLayout
