@@ -1,35 +1,53 @@
 import React from 'react'
+import Link from 'next/link'
 import styled from 'styled-components'
+import { useForm, FormProvider } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { string, object, SchemaOf, date, ref } from 'yup'
 import { CardActions, CardContent } from '@mui/material'
 import { Box } from '@mui/system'
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined'
-import { useForm, FormProvider } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { string, object, SchemaOf } from 'yup'
 import { H1, H3 } from 'components/common/Typography/Typography'
 import InputForm from 'components/form/InputForm/InputForm'
 import { MuiPrimaryButton } from 'components/common/Buttons/Buttons'
-import { LoginAuth } from 'types/auth'
-import Link from 'next/link'
+import DatePicker from 'components/form/DatePicker/DatePicker'
+import { RegisterAuth } from 'types/auth'
+import { differenceInYears, isDate } from 'date-fns'
+import { parseDateString } from 'utils'
 
-const loginValidationSchema: SchemaOf<LoginAuth> = object().shape({
+const registerValidationSchema: SchemaOf<RegisterAuth> = object().shape({
+  fullName: string()
+    .required('Fullname is required')
+    .max(20, 'Name must not exceed 25 characters'),
   email: string().required('Email is required').email('Email is invalid'),
   password: string()
     .required('Password is required')
     .min(6, 'Password must be at least 6 characters')
     .max(40, 'Password must not exceed 40 characters'),
+  confirmPassword: string()
+    .required('Password confirmation is required')
+    .oneOf([ref('password'), null], 'Confirm Password does not match'),
+  birthDate: date()
+    .required('Birthdate is required')
+    .transform(parseDateString)
+    .max(new Date(), 'Invalid birthdate')
+    .test('birthDate', 'Must be at least 16 years old', (birthDate) => {
+      if (!birthDate || !isDate(birthDate)) return false
+      const todaysDate = new Date()
+      return differenceInYears(todaysDate, birthDate as Date) >= 16
+    }),
 })
 
 const Login = () => {
-  const methods = useForm<LoginAuth>({
+  const methods = useForm<RegisterAuth>({
     mode: 'onChange',
-    resolver: yupResolver(loginValidationSchema),
+    resolver: yupResolver(registerValidationSchema),
     shouldFocusError: true,
     criteriaMode: 'all',
     reValidateMode: 'onChange',
   })
 
-  const onUserLogin = (data: LoginAuth) => {
+  const onUserRegistration = (data: RegisterAuth) => {
     console.log(data)
   }
 
@@ -39,21 +57,28 @@ const Login = () => {
       <H3 sx={{ mt: 2 }}>Let&apos;s connect!</H3>
       <Box sx={{ mt: 2 }}>
         <FormProvider {...methods}>
-          <LoginForm onSubmit={methods.handleSubmit(onUserLogin)}>
+          <LoginForm onSubmit={methods.handleSubmit(onUserRegistration)}>
+            <InputForm label="Fullname" name="fullName" />
             <InputForm label="Email" name="email" />
-            <InputForm label="Password" name="password" />
+            <InputForm label="Password" name="password" type="password" />
+            <InputForm
+              label="Confirm Password"
+              name="confirmPassword"
+              type="password"
+            />
+            <DatePicker label="Date of Birth" name="birthDate" />
             <MuiPrimaryButton type="submit">
               <LoginOutlinedIcon sx={{ mr: 1 }} />
-              Login
+              Register Account
             </MuiPrimaryButton>
           </LoginForm>
         </FormProvider>
       </Box>
       <CardActions>
         <CreateAccountText>
-          Don&apos;t have an account yet?
-          <Link href="/signup">
-            <a>CREATE HERE</a>
+          Already have an account ?
+          <Link href="/login">
+            <a>LOGIN</a>
           </Link>
         </CreateAccountText>
       </CardActions>
