@@ -4,7 +4,7 @@ export interface LoginAuth {
 }
 
 export interface RegisterAuth extends LoginAuth {
-  userName: string
+  fullName: string
   confirmPassword: string
-  agreeTerms: boolean
+  birthDate: Date
 }

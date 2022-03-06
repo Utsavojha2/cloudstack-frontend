@@ -1,14 +1,15 @@
 import React from 'react'
 import TextField, { TextFieldProps } from '@mui/material/TextField'
 import { Controller, useFormContext } from 'react-hook-form'
+import { FormItemProps } from 'types/form'
 
-type InputFormProps = TextFieldProps & {
-  variant?: 'outlined' | 'filled' | 'standard'
-  label: string
-  name: string
-}
+type InputFormProps = TextFieldProps &
+  FormItemProps & {
+    variant?: 'outlined' | 'filled' | 'standard'
+  }
 
 const InputForm: React.FC<InputFormProps> = ({
+  type = 'text',
   variant = 'outlined',
   label,
   name,
@@ -26,6 +27,7 @@ const InputForm: React.FC<InputFormProps> = ({
       }) => (
         <>
           <TextField
+            type={type}
             onChange={onChange}
             value={value || ''}
             label={label}

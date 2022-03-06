@@ -12,8 +12,6 @@ First, run the development server:
 
 ```bash
 npm run dev -- -p 3000
-# or
-yarn dev -- -p 3000
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
