@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import AuthLayout from 'layouts/AuthLayout/AuthLayout'
+import Login from 'containers/Authentication/Login/Login'
 
 const Home: NextPage = () => {
   return (
@@ -12,7 +13,9 @@ const Home: NextPage = () => {
           content="This is the description of a full stack application with Next.js, React, Nest.js and TypeScript"
         />
       </Head>
-      <AuthLayout />
+      <AuthLayout>
+        <Login />
+      </AuthLayout>
     </div>
   )
 }

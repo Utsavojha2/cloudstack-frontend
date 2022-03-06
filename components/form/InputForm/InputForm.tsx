@@ -20,14 +20,21 @@ const InputForm: React.FC<InputFormProps> = ({
     <Controller
       name={name}
       control={control}
-      render={({ field: { onChange, value } }) => (
-        <TextField
-          onChange={onChange}
-          value={value}
-          label={label}
-          variant={variant}
-          {...props}
-        />
+      render={({
+        field: { onChange, value },
+        fieldState: { invalid, error },
+      }) => (
+        <>
+          <TextField
+            onChange={onChange}
+            value={value || ''}
+            label={label}
+            variant={variant}
+            error={invalid}
+            helperText={error?.message}
+            {...props}
+          />
+        </>
       )}
     />
   )
