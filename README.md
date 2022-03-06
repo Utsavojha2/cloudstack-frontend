@@ -2,6 +2,7 @@
 
 - [Next.js](https://nextjs.org/docs)
 - [TypeScript](https://www.typescriptlang.org/)
+- [React Query & Axios for API requests](https://react-query.tanstack.com/)
 - [Material UI](https://mui.com/)
 - [Styled Components](https://styled-components.com/)
 - [React Hook Form](https://react-hook-form.com/)
