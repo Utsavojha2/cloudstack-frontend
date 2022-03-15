@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { CardActions, CardContent } from '@mui/material'
 import { Box } from '@mui/system'
@@ -21,6 +22,7 @@ const loginValidationSchema: SchemaOf<LoginAuth> = object().shape({
 })
 
 const Login = () => {
+  const { t: translateText } = useTranslation()
   const methods = useForm<LoginAuth>({
     mode: 'onChange',
     resolver: yupResolver(loginValidationSchema),
@@ -36,7 +38,7 @@ const Login = () => {
   return (
     <CardContent>
       <H1>CloudStack</H1>
-      <H3 sx={{ mt: 2 }}>Let&apos;s connect!</H3>
+      <H3 sx={{ mt: 2 }}>{translateText('letsConnect')}</H3>
       <Box sx={{ mt: 2 }}>
         <FormProvider {...methods}>
           <LoginForm onSubmit={methods.handleSubmit(onUserLogin)}>
@@ -44,23 +46,23 @@ const Login = () => {
             <InputForm label="Password" name="password" />
             <MuiPrimaryButton type="submit">
               <LoginOutlinedIcon sx={{ mr: 1 }} />
-              Login
+              {translateText('login')}
             </MuiPrimaryButton>
           </LoginForm>
         </FormProvider>
       </Box>
       <CardActions>
         <CardFooterText>
-          Don&apos;t have an account yet?
+          {translateText('createAccHelperText')}
           <Link href="/signup">
-            <a>CREATE HERE</a>
+            <a>{translateText('createAccBtnText')}</a>
           </Link>
         </CardFooterText>
       </CardActions>
       <CardActions>
         <CardFooterText>
           <Link href="/forgot-password">
-            <a>Forgot Password?</a>
+            <a>{translateText('forgotPassword')}?</a>
           </Link>
         </CardFooterText>
       </CardActions>

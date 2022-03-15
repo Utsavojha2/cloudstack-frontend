@@ -13,4 +13,8 @@ module.exports = {
       '@mui/styled-engine': '@mui/styled-engine-sc',
     },
   },
+  i18n: {
+    locales: ['en-US', 'fr'],
+    defaultLocale: 'en-US',
+  },
 }
