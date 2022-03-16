@@ -10,15 +10,21 @@ import { H1, H3 } from 'components/common/Typography/Typography'
 import InputForm from 'components/form/InputForm/InputForm'
 import { MuiPrimaryButton } from 'components/common/Buttons/Buttons'
 import Link from 'next/link'
+import { useTranslation } from 'react-i18next'
+import { isRequiredValidation } from 'utils'
 
 type ForgotPasswordSchema = { email: string }
 
-const forgotPasswordValidationSchema: SchemaOf<ForgotPasswordSchema> =
-  object().shape({
-    email: string().required('Email is required').email('Email is invalid'),
-  })
-
 const Login = () => {
+  const { t: translateText } = useTranslation()
+
+  const forgotPasswordValidationSchema: SchemaOf<ForgotPasswordSchema> =
+    object().shape({
+      email: string()
+        .required(isRequiredValidation('email'))
+        .email(translateText('invalidEmail')),
+    })
+
   const methods = useForm<ForgotPasswordSchema>({
     mode: 'onChange',
     resolver: yupResolver(forgotPasswordValidationSchema),
@@ -34,23 +40,23 @@ const Login = () => {
   return (
     <CardContent>
       <H1>CloudStack</H1>
-      <H3 sx={{ mt: 2 }}>Let&apos;s connect!</H3>
+      <H3 sx={{ mt: 2 }}>{translateText('letsConnect')}</H3>
       <Box sx={{ mt: 2 }}>
         <FormProvider {...methods}>
           <LoginForm onSubmit={methods.handleSubmit(onUserLogin)}>
-            <InputForm label="Email" name="email" />
+            <InputForm label={translateText('email')} name="email" />
             <MuiPrimaryButton type="submit">
               <LoginOutlinedIcon sx={{ mr: 1 }} />
-              Reset Password
+              {translateText('resetPassword')}
             </MuiPrimaryButton>
           </LoginForm>
         </FormProvider>
       </Box>
       <CardActions>
         <CreateAccountText>
-          Don&apos;t have an account yet?
+          {translateText('createAccHelperText')}
           <Link href="/signup">
-            <a>CREATE HERE</a>
+            <a>{translateText('createAccBtnText')}</a>
           </Link>
         </CreateAccountText>
       </CardActions>

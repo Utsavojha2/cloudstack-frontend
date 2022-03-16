@@ -1,26 +1,33 @@
 import React from 'react'
+import Link from 'next/link'
+import { useForm, FormProvider } from 'react-hook-form'
+import { string, object, SchemaOf } from 'yup'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { CardActions, CardContent } from '@mui/material'
 import { Box } from '@mui/system'
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined'
-import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { string, object, SchemaOf } from 'yup'
+
 import { H1, H3 } from 'components/common/Typography/Typography'
 import InputForm from 'components/form/InputForm/InputForm'
 import { MuiPrimaryButton } from 'components/common/Buttons/Buttons'
 import { LoginAuth } from 'types/auth'
-import Link from 'next/link'
-
-const loginValidationSchema: SchemaOf<LoginAuth> = object().shape({
-  email: string().required('Email is required').email('Email is invalid'),
-  password: string()
-    .required('Password is required')
-    .min(6, 'Password must be at least 6 characters')
-    .max(40, 'Password must not exceed 40 characters'),
-})
+import { isRequiredValidation } from 'utils'
 
 const Login = () => {
+  const { t: translateText } = useTranslation()
+
+  const loginValidationSchema: SchemaOf<LoginAuth> = object().shape({
+    email: string()
+      .required(isRequiredValidation('email'))
+      .email(translateText('invalidEmail')),
+    password: string()
+      .required(isRequiredValidation('password'))
+      .min(6, translateText('minPasswordLengthError'))
+      .max(10, translateText('maxPasswordLengthError')),
+  })
+
   const methods = useForm<LoginAuth>({
     mode: 'onChange',
     resolver: yupResolver(loginValidationSchema),
@@ -36,31 +43,31 @@ const Login = () => {
   return (
     <CardContent>
       <H1>CloudStack</H1>
-      <H3 sx={{ mt: 2 }}>Let&apos;s connect!</H3>
+      <H3 sx={{ mt: 2 }}>{translateText('letsConnect')}</H3>
       <Box sx={{ mt: 2 }}>
         <FormProvider {...methods}>
           <LoginForm onSubmit={methods.handleSubmit(onUserLogin)}>
-            <InputForm label="Email" name="email" />
-            <InputForm label="Password" name="password" />
+            <InputForm label={translateText('email')} name="email" />
+            <InputForm label={translateText('password')} name="password" />
             <MuiPrimaryButton type="submit">
               <LoginOutlinedIcon sx={{ mr: 1 }} />
-              Login
+              {translateText('login')}
             </MuiPrimaryButton>
           </LoginForm>
         </FormProvider>
       </Box>
       <CardActions>
         <CardFooterText>
-          Don&apos;t have an account yet?
+          {translateText('createAccHelperText')}
           <Link href="/signup">
-            <a>CREATE HERE</a>
+            <a>{translateText('createAccBtnText')}</a>
           </Link>
         </CardFooterText>
       </CardActions>
       <CardActions>
         <CardFooterText>
           <Link href="/forgot-password">
-            <a>Forgot Password?</a>
+            <a>{translateText('forgotPassword')}?</a>
           </Link>
         </CardFooterText>
       </CardActions>
