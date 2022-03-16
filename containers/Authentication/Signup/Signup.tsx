@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -14,31 +15,36 @@ import DatePicker from 'components/form/DatePicker/DatePicker'
 import { RegisterAuth } from 'types/auth'
 import { differenceInYears, isDate } from 'date-fns'
 import { parseDateString } from 'utils'
-
-const registerValidationSchema: SchemaOf<RegisterAuth> = object().shape({
-  fullName: string()
-    .required('Fullname is required')
-    .max(20, 'Name must not exceed 25 characters'),
-  email: string().required('Email is required').email('Email is invalid'),
-  password: string()
-    .required('Password is required')
-    .min(6, 'Password must be at least 6 characters')
-    .max(40, 'Password must not exceed 40 characters'),
-  confirmPassword: string()
-    .required('Password confirmation is required')
-    .oneOf([ref('password'), null], 'Confirm Password does not match'),
-  birthDate: date()
-    .required('Date of birth is required')
-    .transform(parseDateString)
-    .max(new Date(), 'Invalid birthdate')
-    .test('birthDate', 'Must be at least 16 years old', (birthDate) => {
-      if (!birthDate || !isDate(birthDate)) return false
-      const todaysDate = new Date()
-      return differenceInYears(todaysDate, birthDate as Date) >= 16
-    }),
-})
+import { isRequiredValidation } from 'utils'
 
 const Login = () => {
+  const { t: translateText } = useTranslation()
+
+  const registerValidationSchema: SchemaOf<RegisterAuth> = object().shape({
+    fullName: string()
+      .required(isRequiredValidation('fullName'))
+      .max(20, translateText('maxNameLengthError')),
+    email: string()
+      .required(isRequiredValidation('email'))
+      .email(translateText('invalidEmail')),
+    password: string()
+      .required(isRequiredValidation('password'))
+      .min(6, translateText('minPasswordLengthError'))
+      .max(40, translateText('maxPasswordLengthError')),
+    confirmPassword: string()
+      .required(translateText('confirmPasswordValidation'))
+      .oneOf([ref('password'), null], translateText('passwordNotMatched')),
+    birthDate: date()
+      .required(isRequiredValidation('birthDate'))
+      .transform(parseDateString)
+      .max(new Date(), translateText('invalidDob'))
+      .test('birthDate', translateText('ageLimit'), (birthDate) => {
+        if (!birthDate || !isDate(birthDate)) return false
+        const todaysDate = new Date()
+        return differenceInYears(todaysDate, birthDate as Date) >= 16
+      }),
+  })
+
   const methods = useForm<RegisterAuth>({
     mode: 'onChange',
     resolver: yupResolver(registerValidationSchema),
@@ -54,31 +60,35 @@ const Login = () => {
   return (
     <CardContent>
       <H1>CloudStack</H1>
-      <H3 sx={{ mt: 2 }}>Let&apos;s connect!</H3>
+      <H3 sx={{ mt: 2 }}>{translateText('letsConnect')}</H3>
       <Box sx={{ mt: 2 }}>
         <FormProvider {...methods}>
           <LoginForm onSubmit={methods.handleSubmit(onUserRegistration)}>
-            <InputForm label="Fullname" name="fullName" />
-            <InputForm label="Email" name="email" />
-            <InputForm label="Password" name="password" type="password" />
+            <InputForm label={translateText('fullName')} name="fullName" />
+            <InputForm label={translateText('email')} name="email" />
             <InputForm
-              label="Confirm Password"
+              label={translateText('password')}
+              name="password"
+              type="password"
+            />
+            <InputForm
+              label={translateText('confirmPassword')}
               name="confirmPassword"
               type="password"
             />
-            <DatePicker label="Date of Birth" name="birthDate" />
+            <DatePicker label={translateText('birthDate')} name="birthDate" />
             <MuiPrimaryButton type="submit">
               <LoginOutlinedIcon sx={{ mr: 1 }} />
-              Register Account
+              {translateText('registerAccount')}
             </MuiPrimaryButton>
           </LoginForm>
         </FormProvider>
       </Box>
       <CardActions>
         <CreateAccountText>
-          Already have an account ?
+          {translateText('accountAlreadyExists')}
           <Link href="/login">
-            <a>LOGIN</a>
+            <a>{translateText('login').toUpperCase()}</a>
           </Link>
         </CreateAccountText>
       </CardActions>
