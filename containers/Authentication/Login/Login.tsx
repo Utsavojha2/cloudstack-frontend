@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import Link from 'next/link'
 import { useForm, FormProvider } from 'react-hook-form'
 import { string, object, SchemaOf } from 'yup'
@@ -42,6 +43,9 @@ const Login = () => {
 
   return (
     <CardContent>
+      <Head>
+        <title>Login</title>
+      </Head>
       <H1>CloudStack</H1>
       <H3 sx={{ mt: 2 }}>{translateText('letsConnect')}</H3>
       <Box sx={{ mt: 2 }}>

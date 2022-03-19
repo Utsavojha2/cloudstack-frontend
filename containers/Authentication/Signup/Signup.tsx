@@ -16,6 +16,7 @@ import { RegisterAuth } from 'types/auth'
 import { differenceInYears, isDate } from 'date-fns'
 import { parseDateString } from 'utils'
 import { isRequiredValidation } from 'utils'
+import Head from 'next/head'
 
 const Login = () => {
   const { t: translateText } = useTranslation()
@@ -59,6 +60,9 @@ const Login = () => {
 
   return (
     <CardContent>
+      <Head>
+        <title>Sign Up</title>
+      </Head>
       <H1>CloudStack</H1>
       <H3 sx={{ mt: 2 }}>{translateText('letsConnect')}</H3>
       <Box sx={{ mt: 2 }}>

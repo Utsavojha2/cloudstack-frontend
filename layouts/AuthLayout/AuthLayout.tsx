@@ -2,13 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 import Grid from '@mui/material/Grid'
 import { URL } from 'utils/static'
-import { Card } from '@mui/material'
+import { Box, Card, Chip } from '@mui/material'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 interface AuthLayoutProps {
   children: React.ReactNode
 }
 
 const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
+  const { asPath: currentRoute } = useRouter()
+
   return (
     <Grid
       container
@@ -26,6 +30,14 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
         <BackgroundImageLoginPage />
       </Grid>
       <LoginBoxGrid item xs={12} md={6}>
+        <LanguageBox>
+          <Link href={currentRoute} locale="en-US">
+            <Chip label="English" variant="outlined" />
+          </Link>
+          <Link href={currentRoute} locale="fr">
+            <Chip label="French" variant="outlined" sx={{ ml: 1 }} />
+          </Link>
+        </LanguageBox>
         <LoginBoxCard sx={{ mt: 25, mr: { xs: 0, md: 5 } }}>
           {children}
         </LoginBoxCard>
@@ -45,6 +57,12 @@ const BackgroundImageLoginPage = styled.div`
      background-size: cover;
    }
   `};
+`
+
+const LanguageBox = styled(Box)`
+  position: absolute;
+  right: 25px;
+  top: 15px;
 `
 
 const LoginBoxGrid = styled(Grid)`

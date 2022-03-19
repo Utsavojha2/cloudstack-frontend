@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import styled from 'styled-components'
 import { CardActions, CardContent } from '@mui/material'
 import { Box } from '@mui/system'
@@ -6,11 +7,12 @@ import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined'
 import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { string, object, SchemaOf } from 'yup'
+import Link from 'next/link'
+import { useTranslation } from 'react-i18next'
+
 import { H1, H3 } from 'components/common/Typography/Typography'
 import InputForm from 'components/form/InputForm/InputForm'
 import { MuiPrimaryButton } from 'components/common/Buttons/Buttons'
-import Link from 'next/link'
-import { useTranslation } from 'react-i18next'
 import { isRequiredValidation } from 'utils'
 
 type ForgotPasswordSchema = { email: string }
@@ -39,6 +41,9 @@ const Login = () => {
 
   return (
     <CardContent>
+      <Head>
+        <title>Forgot Password</title>
+      </Head>
       <H1>CloudStack</H1>
       <H3 sx={{ mt: 2 }}>{translateText('letsConnect')}</H3>
       <Box sx={{ mt: 2 }}>
