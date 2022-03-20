@@ -17,4 +17,7 @@ module.exports = {
     locales: ['en-US', 'fr'],
     defaultLocale: 'en-US',
   },
+  images: {
+    domains: ['w7.pngwing.com'],
+  },
 }

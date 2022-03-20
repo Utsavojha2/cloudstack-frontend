@@ -1,16 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
 import Grid from '@mui/material/Grid'
-import { URL } from 'utils/static'
-import { Box, Card, Chip } from '@mui/material'
+import { Box, Card, Chip, Skeleton } from '@mui/material'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { URL } from 'utils/static'
+import useProgressiveImage from 'hooks/useProgressiveImage'
 
 interface AuthLayoutProps {
   children: React.ReactNode
 }
 
 const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
+  const loaded = useProgressiveImage(URL.loginPage)
   const { asPath: currentRoute } = useRouter()
 
   return (
@@ -27,14 +29,22 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
           display: { xs: 'none', md: 'block' },
         }}
       >
-        <BackgroundImageLoginPage />
+        {loaded ? (
+          <BackgroundImageLoginPage />
+        ) : (
+          <MuiSkeleton
+            sx={{ height: '100vh' }}
+            animation="wave"
+            variant="rectangular"
+          />
+        )}
       </Grid>
       <LoginBoxGrid item xs={12} md={6}>
         <LanguageBox>
-          <Link href={currentRoute} locale="en-US">
+          <Link href={currentRoute} locale="en-US" passHref>
             <Chip label="English" variant="outlined" />
           </Link>
-          <Link href={currentRoute} locale="fr">
+          <Link href={currentRoute} locale="fr" passHref>
             <Chip label="French" variant="outlined" sx={{ ml: 1 }} />
           </Link>
         </LanguageBox>
@@ -45,6 +55,12 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
     </Grid>
   )
 }
+
+const MuiSkeleton = styled(Skeleton)`
+  ${({ theme }) => `
+      background-color:  ${theme.palette.grey[100]};
+  `};
+`
 
 const BackgroundImageLoginPage = styled.div`
   ${({ theme }) => `
@@ -67,7 +83,7 @@ const LanguageBox = styled(Box)`
 
 const LoginBoxGrid = styled(Grid)`
   ${({ theme }) => `
-      background: ${theme.palette.grey[100]};
+      background: ${theme.palette.grey[200]};
   `};
 `
 

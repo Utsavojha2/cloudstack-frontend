@@ -1,5 +1,7 @@
 import { Drawer, List, ListItem, ListItemText, Toolbar } from '@mui/material'
 import React from 'react'
+import styled from 'styled-components'
+import { URL } from 'utils/static'
 
 const drawerWidth = 350
 
@@ -18,6 +20,7 @@ const Sidebar = () => {
       anchor="left"
       open={true}
     >
+      <BrandLogo src={URL.brandLogo} alt="" />
       <Toolbar />
       <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text) => (
@@ -30,5 +33,12 @@ const Sidebar = () => {
     </Drawer>
   )
 }
+
+const BrandLogo = styled.img`
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+  margin-left: 50px;
+`
 
 export default Sidebar
