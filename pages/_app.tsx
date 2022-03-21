@@ -4,12 +4,9 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import i18n from 'i18next'
-import {
-  StyledEngineProvider,
-  ThemeProvider as MuiThemeProvider,
-} from '@mui/material/styles'
+import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import { ThemeProvider } from 'styled-components'
+import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 import 'styles/globals.css'
 import theme from 'theme/theme'
 import 'translations/i18n'
@@ -30,13 +27,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <StyledEngineProvider injectFirst>
-        <MuiThemeProvider theme={theme}>
-          <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+          <StyledThemeProvider theme={theme}>
             <CssBaseline />
             <TopProgressBar />
             <Component {...pageProps} />
-          </ThemeProvider>
-        </MuiThemeProvider>
+          </StyledThemeProvider>
+        </ThemeProvider>
       </StyledEngineProvider>
     </QueryClientProvider>
   )

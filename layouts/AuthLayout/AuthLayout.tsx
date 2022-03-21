@@ -1,14 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
 import Grid from '@mui/material/Grid'
+import { Box, Card, Chip, Skeleton } from '@mui/material'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { URL } from 'utils/static'
-import { Card } from '@mui/material'
+import useProgressiveImage from 'hooks/useProgressiveImage'
 
 interface AuthLayoutProps {
   children: React.ReactNode
 }
 
 const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
+  const loadedImage = useProgressiveImage(URL.loginPage)
+  const { asPath: currentRoute } = useRouter()
+
   return (
     <Grid
       container
@@ -23,9 +29,25 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
           display: { xs: 'none', md: 'block' },
         }}
       >
-        <BackgroundImageLoginPage />
+        {loadedImage ? (
+          <BackgroundImageLoginPage />
+        ) : (
+          <MuiSkeleton
+            sx={{ height: '100vh' }}
+            animation="wave"
+            variant="rectangular"
+          />
+        )}
       </Grid>
       <LoginBoxGrid item xs={12} md={6}>
+        <LanguageBox>
+          <Link href={currentRoute} locale="en-US" passHref>
+            <Chip label="English" variant="outlined" />
+          </Link>
+          <Link href={currentRoute} locale="fr" passHref>
+            <Chip label="French" variant="outlined" sx={{ ml: 1 }} />
+          </Link>
+        </LanguageBox>
         <LoginBoxCard sx={{ mt: 25, mr: { xs: 0, md: 5 } }}>
           {children}
         </LoginBoxCard>
@@ -33,6 +55,12 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
     </Grid>
   )
 }
+
+const MuiSkeleton = styled(Skeleton)`
+  ${({ theme }) => `
+      background-color:  ${theme.palette.grey[100]};
+  `};
+`
 
 const BackgroundImageLoginPage = styled.div`
   ${({ theme }) => `
@@ -47,9 +75,15 @@ const BackgroundImageLoginPage = styled.div`
   `};
 `
 
+const LanguageBox = styled(Box)`
+  position: absolute;
+  right: 25px;
+  top: 15px;
+`
+
 const LoginBoxGrid = styled(Grid)`
   ${({ theme }) => `
-      background: ${theme.palette.grey[100]};
+      background: ${theme.palette.grey[200]};
   `};
 `
 
