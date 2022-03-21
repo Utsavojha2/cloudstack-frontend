@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 const useProgressiveImage = (imgSrc: string) => {
   const [sourceLoaded, setSourceLoaded] = useState<string | null>(null)
 
-  const onImageLoad = () => {
-    setSourceLoaded(imgSrc)
-  }
+  const onImageLoad = useCallback(() => setSourceLoaded(imgSrc), [imgSrc])
 
   useEffect(() => {
     const img = new Image()

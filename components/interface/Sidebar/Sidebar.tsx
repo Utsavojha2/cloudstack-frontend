@@ -1,5 +1,6 @@
+import React from 'react'
 import {
-  Drawer,
+  Divider,
   Grid,
   List,
   ListItem,
@@ -7,49 +8,23 @@ import {
   ListItemText,
   Toolbar,
 } from '@mui/material'
-import { H1, H2, P2 } from 'components/common/Typography/Typography'
-import React from 'react'
-import styled from 'styled-components'
-import FeedIcon from '@mui/icons-material/Feed'
-import SearchIcon from '@mui/icons-material/Search'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import LogoutIcon from '@mui/icons-material/Logout'
-
-const drawerWidth = 350
-const navigationItems = [
-  {
-    name: 'Feed',
-    icon: <FeedIcon />,
-  },
-  {
-    name: 'Explore',
-    icon: <SearchIcon />,
-  },
-  {
-    name: 'Profile',
-    icon: <AccountCircleIcon />,
-  },
-  {
-    name: 'Log Out',
-    icon: <LogoutIcon />,
-  },
-]
+import CopyrightIcon from '@mui/icons-material/Copyright'
+import { H1, H2, H3, P1, P2 } from 'components/common/Typography/Typography'
+import { navigationItems } from 'components/interface/Sidebar/helpers'
+import styles from './styles'
 
 const Sidebar = () => {
+  const {
+    MuiSidebar,
+    BrandLogo,
+    UserLogoWrapper,
+    UserHeaderWrapper,
+    UserHandle,
+    UserFeedInfo,
+  } = styles
+
   return (
-    <Drawer
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: drawerWidth,
-          boxSizing: 'border-box',
-        },
-      }}
-      variant="persistent"
-      anchor="left"
-      open={true}
-    >
+    <MuiSidebar variant="persistent" anchor="left" open>
       <Grid container spacing={2} justifyContent="center" sx={{ mt: 2 }}>
         <Grid item md={4}>
           <Grid container justifyContent="flex-end">
@@ -88,58 +63,61 @@ const Sidebar = () => {
         </Grid>
       </Grid>
 
+      <Grid container justifyContent="center" sx={{ mt: 4 }}>
+        <Grid item md={4}>
+          <UserFeedInfo container direction="column" alignItems="center">
+            <P1>42</P1>
+            <P2>Posts</P2>
+          </UserFeedInfo>
+        </Grid>
+        <Grid item md={4}>
+          <UserFeedInfo container direction="column" alignItems="center">
+            <P1>2.8k</P1>
+            <P2>Followers</P2>
+          </UserFeedInfo>
+        </Grid>
+        <Grid item md={4}>
+          <UserFeedInfo
+            container
+            direction="column"
+            alignItems="center"
+            className="grid-lastcell"
+          >
+            <P1>526</P1>
+            <P2>Following</P2>
+          </UserFeedInfo>
+        </Grid>
+      </Grid>
+
       <Toolbar />
+      <Divider />
       <List>
-        {navigationItems.map((item) => (
-          <ListItem button key={item.name} sx={{ px: 5 }}>
-            <ListItemIcon sx={{ minWidth: '40px' }}>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.name} />
+        {navigationItems.map(({ name, icon: ItemIcon }) => (
+          <ListItem button key={name} sx={{ px: 5 }}>
+            <ListItemIcon sx={{ minWidth: '40px' }}>
+              <ItemIcon />
+            </ListItemIcon>
+            <ListItemText primary={name} />
           </ListItem>
         ))}
       </List>
-    </Drawer>
+      <Divider />
+      <Grid container justifyContent="cente" sx={{ mt: 'auto', mb: 2 }}>
+        <Grid item md={12}>
+          <Divider />
+        </Grid>
+        <Grid item md={8} sx={{ ml: 3, mt: 2 }}>
+          <Grid container justifyContent="" alignItems="center">
+            <CopyrightIcon />
+            <H3 sx={{ ml: 1 }}>CloudStack</H3>
+          </Grid>
+          <Grid container sx={{ ml: 0.5, mt: 0.5 }}>
+            <P1>All rights reserved.</P1>
+          </Grid>
+        </Grid>
+      </Grid>
+    </MuiSidebar>
   )
 }
-
-const BrandLogo = styled.img`
-  height: 50px;
-  width: 50px;
-  object-fit: cover;
-  border-radius: 50%;
-`
-
-const UserLogoWrapper = styled.div`
-  border: 1px solid;
-  border-color: ${({ theme }) => theme.palette.action.active};
-  padding: 5px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  & img {
-    height: 100px;
-    width: 100px;
-    object-fit: cover;
-    border-radius: 50%;
-  }
-`
-
-const UserHeaderWrapper = styled.div`
-  width: 100%;
-  & > * {
-    text-align: center;
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-`
-
-const UserHandle = styled(P2)`
-  text-align: center;
-  display: block;
-  margin-top: 5px;
-`
 
 export default Sidebar

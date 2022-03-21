@@ -12,7 +12,7 @@ interface AuthLayoutProps {
 }
 
 const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
-  const loaded = useProgressiveImage(URL.loginPage)
+  const loadedImage = useProgressiveImage(URL.loginPage)
   const { asPath: currentRoute } = useRouter()
 
   return (
@@ -29,7 +29,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
           display: { xs: 'none', md: 'block' },
         }}
       >
-        {loaded ? (
+        {loadedImage ? (
           <BackgroundImageLoginPage />
         ) : (
           <MuiSkeleton
