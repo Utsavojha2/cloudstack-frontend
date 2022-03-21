@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react'
 const useProgressiveImage = (imgSrc: string) => {
   const [sourceLoaded, setSourceLoaded] = useState<string | null>(null)
 
-  const onImageLoad = useCallback(() => setSourceLoaded(imgSrc), [imgSrc])
+  const onImageLoad = useCallback(() => setSourceLoaded(imgSrc), [])
 
   useEffect(() => {
     const img = new Image()
