@@ -1,19 +1,20 @@
-import React from 'react'
-import styled from 'styled-components'
-import Grid from '@mui/material/Grid'
-import { Box, Card, Chip, Skeleton } from '@mui/material'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { URL } from 'utils/static'
-import useProgressiveImage from 'hooks/useProgressiveImage'
+import React from 'react';
+import styled from 'styled-components';
+import Grid from '@mui/material/Grid';
+import { Box, Chip, Skeleton } from '@mui/material';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { URL } from 'utils/static';
+import useProgressiveImage from 'hooks/useProgressiveImage';
+import { motion } from 'framer-motion';
 
 interface AuthLayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
-  const loadedImage = useProgressiveImage(URL.loginPage)
-  const { asPath: currentRoute } = useRouter()
+  const loadedImage = useProgressiveImage(URL.loginPage);
+  const { asPath: currentRoute } = useRouter();
 
   return (
     <Grid
@@ -48,19 +49,26 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
             <Chip label="French" variant="outlined" sx={{ ml: 1 }} />
           </Link>
         </LanguageBox>
-        <LoginBoxCard sx={{ mt: 25, mr: { xs: 0, md: 5 } }}>
+        <LoginBoxCard
+          animate={{
+            y: 200,
+            scale: [1, 1.1, 1],
+            borderRadius: ['0px', '10px', '0px'],
+          }}
+          transition={{ duration: 1 }}
+        >
           {children}
         </LoginBoxCard>
       </LoginBoxGrid>
     </Grid>
-  )
-}
+  );
+};
 
 const MuiSkeleton = styled(Skeleton)`
   ${({ theme }) => `
       background-color:  ${theme.palette.grey[100]};
   `};
-`
+`;
 
 const BackgroundImageLoginPage = styled.div`
   ${({ theme }) => `
@@ -73,41 +81,42 @@ const BackgroundImageLoginPage = styled.div`
      background-size: cover;
    }
   `};
-`
+`;
 
 const LanguageBox = styled(Box)`
   position: absolute;
   right: 25px;
   top: 15px;
-`
+`;
 
 const LoginBoxGrid = styled(Grid)`
   ${({ theme }) => `
       background: ${theme.palette.grey[200]};
   `};
-`
+`;
 
-const LoginBoxCard = styled(Card)`
+const LoginBoxCard = styled(motion.div)`
   ${({ theme }) => `
+    background: ${theme.palette.grey[0]};
     max-width: 500px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     ${theme.breakpoints.up('xs')}{
-        margin-left: 20px;
-        margin-right: 20px;   
+      margin-left: 20px;
+      margin-right: 20px;   
     }
     ${theme.breakpoints.up('sm')}{
-        margin-left: auto;
-        margin-right: auto;   
+      margin-left: auto;
+      margin-right: auto;   
     }
     ${theme.breakpoints.up('md')}{
-       margin-left: 0px;
-       margin-right: 30px;
+      margin-left: 0px;
+      margin-right: 30px;
     }
     ${theme.breakpoints.up('lg')}{
-        margin-left: auto;
-        margin-right: auto;     
+      margin-left: auto;
+      margin-right: auto;     
     }
   `};
-`
+`;
 
-export default AuthLayout
+export default AuthLayout;

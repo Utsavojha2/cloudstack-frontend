@@ -1,17 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import {
   Divider,
   Grid,
+  IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   Toolbar,
-} from '@mui/material'
-import CopyrightIcon from '@mui/icons-material/Copyright'
-import { H1, H2, H3, P1, P2 } from 'components/common/Typography/Typography'
-import { navigationItems } from 'components/interface/Sidebar/helpers'
-import styles from './styles'
+  useMediaQuery,
+} from '@mui/material';
+import CopyrightIcon from '@mui/icons-material/Copyright';
+import { H1, H2, H3, P1, P2 } from 'components/common/Typography/Typography';
+import { navigationItems } from 'components/interface/Sidebar/helpers';
+import styles from './styles';
+import theme from 'theme/theme';
+import { CloseOutlined } from '@mui/icons-material';
 
 const Sidebar = () => {
   const {
@@ -21,10 +25,27 @@ const Sidebar = () => {
     UserHeaderWrapper,
     UserHandle,
     UserFeedInfo,
-  } = styles
+    DrawerHeader,
+  } = styles;
+  const isScreenSizeMedium = useMediaQuery(theme.breakpoints.up('md'));
+  const [isDrawerOpen, setIsDrawerOpen] = useState(isScreenSizeMedium);
+
+  useEffect(() => {
+    setIsDrawerOpen(isScreenSizeMedium);
+  }, [isScreenSizeMedium]);
+
+  const handleDrawerClose = () => {
+    setIsDrawerOpen(false);
+  };
 
   return (
-    <MuiSidebar variant="persistent" anchor="left" open>
+    <MuiSidebar variant="persistent" anchor="left" open={isDrawerOpen}>
+      <DrawerHeader>
+        <IconButton onClick={handleDrawerClose}>
+          <CloseOutlined />
+        </IconButton>
+      </DrawerHeader>
+
       <Grid container spacing={2} justifyContent="center" sx={{ mt: 2 }}>
         <Grid item md={4}>
           <Grid container justifyContent="flex-end">
@@ -64,19 +85,19 @@ const Sidebar = () => {
       </Grid>
 
       <Grid container justifyContent="center" sx={{ mt: 4 }}>
-        <Grid item md={4}>
+        <Grid item xs={4}>
           <UserFeedInfo container direction="column" alignItems="center">
             <P1>42</P1>
             <P2>Posts</P2>
           </UserFeedInfo>
         </Grid>
-        <Grid item md={4}>
+        <Grid item xs={4}>
           <UserFeedInfo container direction="column" alignItems="center">
             <P1>2.8k</P1>
             <P2>Followers</P2>
           </UserFeedInfo>
         </Grid>
-        <Grid item md={4}>
+        <Grid item xs={4}>
           <UserFeedInfo
             container
             direction="column"
@@ -104,7 +125,7 @@ const Sidebar = () => {
       <Divider />
       <Grid container justifyContent="cente" sx={{ mt: 'auto', mb: 2 }}>
         <Grid item md={12}>
-          <Divider />
+          {/* <Divider /> */}
         </Grid>
         <Grid item md={8} sx={{ ml: 3, mt: 2 }}>
           <Grid container justifyContent="" alignItems="center">
@@ -112,12 +133,12 @@ const Sidebar = () => {
             <H3 sx={{ ml: 1 }}>CloudStack</H3>
           </Grid>
           <Grid container sx={{ ml: 0.5, mt: 0.5 }}>
-            <P1>All rights reserved.</P1>
+            <P1>All rights reserved. 2022.</P1>
           </Grid>
         </Grid>
       </Grid>
     </MuiSidebar>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;
