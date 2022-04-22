@@ -1,23 +1,31 @@
-import React from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
-import { useForm, FormProvider } from 'react-hook-form'
-import { string, object, SchemaOf } from 'yup'
-import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
-import { CardActions, CardContent } from '@mui/material'
-import { Box } from '@mui/system'
-import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined'
-import { yupResolver } from '@hookform/resolvers/yup'
+import React from 'react';
+import { useRouter } from 'next/router';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useMutation, useQueryClient } from 'react-query';
+import axios from 'axios';
+import { useForm, FormProvider } from 'react-hook-form';
+import { string, object, SchemaOf } from 'yup';
+import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
+import { CardActions, CardContent } from '@mui/material';
+import { Box } from '@mui/system';
+import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-import { H1, H3 } from 'components/common/Typography/Typography'
-import InputForm from 'components/form/InputForm/InputForm'
-import { MuiPrimaryButton } from 'components/common/Buttons/Buttons'
-import { LoginAuth } from 'types/auth'
-import { isRequiredValidation } from 'utils'
+import setupInterceptors from 'config/interceptor';
+import useTokenContext from 'config/token.context';
+import { H1, H3 } from 'components/Common/Typography/Typography';
+import InputForm from 'components/Form/InputForm/InputForm';
+import { MuiPrimaryButton } from 'components/Common/Buttons/Buttons';
+import { LoginAuth, TokenPayload } from 'types/auth';
+import { isRequiredValidation } from 'utils';
 
 const Login = () => {
-  const { t: translateText } = useTranslation()
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const { setToken } = useTokenContext();
+  const { t: translateText } = useTranslation();
 
   const loginValidationSchema: SchemaOf<LoginAuth> = object().shape({
     email: string()
@@ -26,8 +34,8 @@ const Login = () => {
     password: string()
       .required(isRequiredValidation('password'))
       .min(6, translateText('minPasswordLengthError'))
-      .max(10, translateText('maxPasswordLengthError')),
-  })
+      .max(40, translateText('maxPasswordLengthError')),
+  });
 
   const methods = useForm<LoginAuth>({
     mode: 'onChange',
@@ -35,11 +43,25 @@ const Login = () => {
     shouldFocusError: true,
     criteriaMode: 'all',
     reValidateMode: 'onChange',
-  })
+  });
 
-  const onUserLogin = (data: LoginAuth) => {
-    console.log(data)
-  }
+  const onLoginRequest = (loginPayload: LoginAuth) => {
+    return axios.post<Required<TokenPayload>>('/v1/api/login', loginPayload);
+  };
+
+  const { mutate } = useMutation(onLoginRequest, {
+    onSuccess: (response) => {
+      setToken(response.data?.accessToken);
+      setupInterceptors(axios, response.data?.accessToken);
+      queryClient.invalidateQueries('/current-user');
+      if (!response.data?.is_verified) {
+        router.push('/auth/verify');
+        return;
+      }
+      // route to feed
+    },
+  });
+  const onUserLogin = (data: LoginAuth) => mutate(data);
 
   return (
     <CardContent>
@@ -76,15 +98,15 @@ const Login = () => {
         </CardFooterText>
       </CardActions>
     </CardContent>
-  )
-}
+  );
+};
 
 const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
   row-gap: 20px;
-`
+`;
 
 const CardFooterText = styled(H3)`
   ${({ theme }) => `
@@ -104,6 +126,6 @@ const CardFooterText = styled(H3)`
       }
     }
   `}
-`
+`;
 
-export default Login
+export default Login;

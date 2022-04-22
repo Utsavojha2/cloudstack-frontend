@@ -1,6 +1,6 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import Sidebar from 'components/interface/Sidebar/Sidebar';
+import Sidebar from 'components/Layout/Sidebar/Sidebar';
 import styled from 'styled-components';
 
 const UserFeed: React.FC = ({ children }) => {
