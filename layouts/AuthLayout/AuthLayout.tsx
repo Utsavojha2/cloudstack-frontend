@@ -5,7 +5,7 @@ import { Box, Chip, Skeleton } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { URL } from 'utils/static';
-import useProgressiveImage from 'hooks/useProgressiveImage';
+import useProgressiveImage from 'hooks/common/useProgressiveImage';
 import { motion } from 'framer-motion';
 
 interface AuthLayoutProps {

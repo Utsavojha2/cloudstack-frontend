@@ -1,25 +1,25 @@
-import React from 'react'
-import Link from 'next/link'
-import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
-import { useForm, FormProvider } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { string, object, SchemaOf, date, ref } from 'yup'
-import { CardActions, CardContent } from '@mui/material'
-import { Box } from '@mui/system'
-import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined'
-import { H1, H3 } from 'components/common/Typography/Typography'
-import InputForm from 'components/form/InputForm/InputForm'
-import { MuiPrimaryButton } from 'components/common/Buttons/Buttons'
-import DatePicker from 'components/form/DatePicker/DatePicker'
-import { RegisterAuth } from 'types/auth'
-import { differenceInYears, isDate } from 'date-fns'
-import { parseDateString } from 'utils'
-import { isRequiredValidation } from 'utils'
-import Head from 'next/head'
+import React from 'react';
+import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { string, object, SchemaOf, date, ref } from 'yup';
+import { CardActions, CardContent } from '@mui/material';
+import { Box } from '@mui/system';
+import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
+import { H1, H3 } from 'components/Common/Typography/Typography';
+import InputForm from 'components/Form/InputForm/InputForm';
+import { MuiPrimaryButton } from 'components/Common/Buttons/Buttons';
+import DatePicker from 'components/Form/DatePicker/DatePicker';
+import { RegisterAuth } from 'types/auth';
+import { differenceInYears, isDate } from 'date-fns';
+import { parseDateString } from 'utils';
+import { isRequiredValidation } from 'utils';
+import Head from 'next/head';
 
 const Login = () => {
-  const { t: translateText } = useTranslation()
+  const { t: translateText } = useTranslation();
 
   const registerValidationSchema: SchemaOf<RegisterAuth> = object().shape({
     fullName: string()
@@ -40,11 +40,11 @@ const Login = () => {
       .transform(parseDateString)
       .max(new Date(), translateText('invalidDob'))
       .test('birthDate', translateText('ageLimit'), (birthDate) => {
-        if (!birthDate || !isDate(birthDate)) return false
-        const todaysDate = new Date()
-        return differenceInYears(todaysDate, birthDate as Date) >= 16
+        if (!birthDate || !isDate(birthDate)) return false;
+        const todaysDate = new Date();
+        return differenceInYears(todaysDate, birthDate as Date) >= 16;
       }),
-  })
+  });
 
   const methods = useForm<RegisterAuth>({
     mode: 'onChange',
@@ -52,11 +52,11 @@ const Login = () => {
     shouldFocusError: true,
     criteriaMode: 'all',
     reValidateMode: 'onChange',
-  })
+  });
 
   const onUserRegistration = (data: RegisterAuth) => {
-    console.log(data)
-  }
+    console.log(data);
+  };
 
   return (
     <CardContent>
@@ -97,15 +97,15 @@ const Login = () => {
         </CreateAccountText>
       </CardActions>
     </CardContent>
-  )
-}
+  );
+};
 
 const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
   row-gap: 20px;
-`
+`;
 
 const CreateAccountText = styled(H3)`
   ${({ theme }) => `
@@ -125,6 +125,6 @@ const CreateAccountText = styled(H3)`
       }
     }
   `}
-`
+`;
 
-export default Login
+export default Login;

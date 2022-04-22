@@ -1,6 +1,6 @@
-import React from 'react'
-import Box from '@mui/material/Box'
-import Sidebar from 'components/interface/Sidebar/Sidebar'
+import React from 'react';
+import Box from '@mui/material/Box';
+import Sidebar from 'components/Layout/Sidebar/Sidebar';
 
 const UserFeed: React.FC = ({ children }) => {
   return (
@@ -8,7 +8,7 @@ const UserFeed: React.FC = ({ children }) => {
       <Sidebar />
       <div>{children}</div>
     </Box>
-  )
-}
+  );
+};
 
-export default UserFeed
+export default UserFeed;

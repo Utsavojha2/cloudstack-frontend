@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-}
+};
 
 module.exports = {
   ...nextConfig,
@@ -20,4 +20,11 @@ module.exports = {
   images: {
     domains: ['w7.pngwing.com'],
   },
-}
+  env: {
+    isDev: process.env.NODE_ENV === 'development',
+  },
+  publicRuntimeConfig: {
+    apiEndPoint: process.env.API_ENDPOINT,
+    stage: process.env.STAGE,
+  },
+};
