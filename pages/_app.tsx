@@ -23,7 +23,6 @@ import setupInterceptors from 'config/interceptor';
 import AuthChecker from 'components/AuthChecker/AuthChecker';
 import TopProgressBar from 'containers/Loading/ProgressBar';
 import { TokenContext } from 'config/token.context';
-import useStateCallback from 'hooks/common/useStateCallback';
 import { TokenPayload } from 'types/auth';
 
 const Snackbar = dynamic(() => import('components/Common/Snackbar/Snackbar'), {
@@ -44,14 +43,14 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const { locale } = useRouter();
   // TODO: better type check for errors
   const [error, setError] = useState<unknown>(null);
-  const [accessToken, setAccessToken] = useStateCallback('');
+  const [accessToken, setAccessToken] = useState('');
 
   useEffect(() => {
     i18n.changeLanguage(locale);
   }, [locale]);
 
-  const setToken = (token: string, callbackFn?: () => void) => {
-    setAccessToken(token, callbackFn);
+  const setToken = (token: string) => {
+    setAccessToken(token);
   };
 
   const queryClient = new QueryClient({
