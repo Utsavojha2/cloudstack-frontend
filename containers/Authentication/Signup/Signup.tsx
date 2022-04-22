@@ -91,7 +91,7 @@ const Login = () => {
       <CardActions>
         <CreateAccountText>
           {translateText('accountAlreadyExists')}
-          <Link href="/login">
+          <Link href="/auth/login">
             <a>{translateText('login').toUpperCase()}</a>
           </Link>
         </CreateAccountText>

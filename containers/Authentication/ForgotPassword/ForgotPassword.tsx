@@ -60,7 +60,7 @@ const Login = () => {
       <CardActions>
         <CreateAccountText>
           {translateText('createAccHelperText')}
-          <Link href="/signup">
+          <Link href="/auth/signup">
             <a>{translateText('createAccBtnText')}</a>
           </Link>
         </CreateAccountText>

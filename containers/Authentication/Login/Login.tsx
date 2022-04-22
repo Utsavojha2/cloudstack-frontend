@@ -85,14 +85,14 @@ const Login = () => {
       <CardActions>
         <CardFooterText>
           {translateText('createAccHelperText')}
-          <Link href="/signup">
+          <Link href="/auth/signup">
             <a>{translateText('createAccBtnText')}</a>
           </Link>
         </CardFooterText>
       </CardActions>
       <CardActions>
         <CardFooterText>
-          <Link href="/forgot-password">
+          <Link href="/auth/forgot-password">
             <a>{translateText('forgotPassword')}?</a>
           </Link>
         </CardFooterText>

@@ -144,3 +144,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     </TokenContext.Provider>
   );
 }
+
+// 'Component.Layout': PropTypes.node,
+//   'Component.requireAuth': PropTypes.bool,
