@@ -45,7 +45,7 @@ const Login = () => {
     reValidateMode: 'onChange',
   });
 
-  const onLoginRequest = (loginPayload: LoginAuth) => {
+  const onLoginRequest = async (loginPayload: LoginAuth) => {
     return axios.post<Required<TokenPayload>>('/v1/api/login', loginPayload);
   };
 
@@ -58,9 +58,10 @@ const Login = () => {
         router.push('/auth/verify');
         return;
       }
-      // route to feed
+      // route to feed or redirecting url
     },
   });
+
   const onUserLogin = (data: LoginAuth) => mutate(data);
 
   return (

@@ -5,7 +5,7 @@ export interface LoginAuth {
 
 export interface RegisterAuth extends LoginAuth {
   fullName: string;
-  confirmPassword: string;
+  confirm_password: string;
   birthDate: Date;
 }
 

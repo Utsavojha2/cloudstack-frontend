@@ -8,4 +8,6 @@ const SignIn = () => (
   </AuthLayout>
 );
 
+SignIn.isGuestPage = true;
+
 export default SignIn;

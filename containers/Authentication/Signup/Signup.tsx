@@ -1,5 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
+import Head from 'next/head';
+import axios from 'axios';
+import { useMutation } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -16,7 +19,6 @@ import { RegisterAuth } from 'types/auth';
 import { differenceInYears, isDate } from 'date-fns';
 import { parseDateString } from 'utils';
 import { isRequiredValidation } from 'utils';
-import Head from 'next/head';
 
 const Login = () => {
   const { t: translateText } = useTranslation();
@@ -32,7 +34,7 @@ const Login = () => {
       .required(isRequiredValidation('password'))
       .min(6, translateText('minPasswordLengthError'))
       .max(40, translateText('maxPasswordLengthError')),
-    confirmPassword: string()
+    confirm_password: string()
       .required(translateText('confirmPasswordValidation'))
       .oneOf([ref('password'), null], translateText('passwordNotMatched')),
     birthDate: date()
@@ -54,9 +56,12 @@ const Login = () => {
     reValidateMode: 'onChange',
   });
 
-  const onUserRegistration = (data: RegisterAuth) => {
-    console.log(data);
+  const onAccountRegistrationRequest = (registerPayload: RegisterAuth) => {
+    return axios.post('/v1/api/register-user', registerPayload);
   };
+
+  const { mutate } = useMutation(onAccountRegistrationRequest);
+  const onUserRegistration = (data: RegisterAuth) => mutate(data);
 
   return (
     <CardContent>
@@ -77,7 +82,7 @@ const Login = () => {
             />
             <InputForm
               label={translateText('confirmPassword')}
-              name="confirmPassword"
+              name="confirm_password"
               type="password"
             />
             <DatePicker label={translateText('birthDate')} name="birthDate" />
