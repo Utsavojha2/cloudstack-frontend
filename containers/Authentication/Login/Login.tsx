@@ -45,7 +45,7 @@ const Login = () => {
     reValidateMode: 'onChange',
   });
 
-  const onLoginRequest = (loginPayload: LoginAuth) => {
+  const onLoginRequest = async (loginPayload: LoginAuth) => {
     return axios.post<Required<TokenPayload>>('/v1/api/login', loginPayload);
   };
 
@@ -58,9 +58,10 @@ const Login = () => {
         router.push('/auth/verify');
         return;
       }
-      // route to feed
+      // route to feed or redirecting url
     },
   });
+
   const onUserLogin = (data: LoginAuth) => mutate(data);
 
   return (
@@ -85,14 +86,14 @@ const Login = () => {
       <CardActions>
         <CardFooterText>
           {translateText('createAccHelperText')}
-          <Link href="/signup">
+          <Link href="/auth/signup">
             <a>{translateText('createAccBtnText')}</a>
           </Link>
         </CardFooterText>
       </CardActions>
       <CardActions>
         <CardFooterText>
-          <Link href="/forgot-password">
+          <Link href="/auth/forgot-password">
             <a>{translateText('forgotPassword')}?</a>
           </Link>
         </CardFooterText>
