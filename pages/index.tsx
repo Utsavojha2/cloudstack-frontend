@@ -1,7 +1,7 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import AuthLayout from 'layouts/AuthLayout/AuthLayout'
-import Login from 'containers/Authentication/Login/Login'
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import AuthLayout from 'layouts/AuthLayout/AuthLayout';
+import Login from 'containers/Authentication/Login/Login';
 
 const Home: NextPage = () => {
   return (
@@ -17,7 +17,7 @@ const Home: NextPage = () => {
         <Login />
       </AuthLayout>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
