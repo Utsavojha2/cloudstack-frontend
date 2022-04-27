@@ -8,6 +8,7 @@ import theme from 'theme/theme';
 import i18n from 'translations/i18n';
 
 const queryClient = new QueryClient();
+/* eslint-disable @typescript-eslint/no-var-requires */
 const useRouter = jest.spyOn(require('next/router'), 'useRouter');
 
 export function mockNextUseRouter(props: {

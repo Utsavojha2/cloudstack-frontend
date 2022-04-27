@@ -31,7 +31,7 @@ export default function ProgressBar() {
 
   if (isCurrentlyFetching || isCurrentlyMutating || isLoading) {
     return (
-      <Box sx={{ width: '100%' }} role="alert">
+      <Box sx={{ width: '100%' }}>
         <LinearProgress />
       </Box>
     );
