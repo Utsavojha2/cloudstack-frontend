@@ -23,7 +23,7 @@ import { isRequiredValidation } from 'utils';
 
 const Login = () => {
   const queryClient = useQueryClient();
-  const router = useRouter();
+  const { push } = useRouter();
   const { setToken } = useTokenContext();
   const { t: translateText } = useTranslation();
 
@@ -55,7 +55,7 @@ const Login = () => {
       setupInterceptors(axios, response.data?.accessToken);
       queryClient.invalidateQueries('/current-user');
       if (!response.data?.is_verified) {
-        router.push('/auth/verify');
+        push('/auth/verify');
         return;
       }
       // route to feed or redirecting url
