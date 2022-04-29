@@ -9,5 +9,8 @@ export type IError = {
 export interface IAppProps extends AppProps {
   Component: NextComponentType & {
     isGuestPage?: boolean;
+    Layout?: () => JSX.Element;
   };
 }
+
+export type IGlobalError = null | IError;

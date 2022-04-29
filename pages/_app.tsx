@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { isArray } from 'lodash';
 import getConfig from 'next/config';
@@ -14,28 +14,30 @@ import i18n from 'i18next';
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import 'styles/globals.css';
-import theme from 'theme/theme';
-import 'translations/i18n';
 import setupInterceptors from 'config/interceptor';
 import AuthChecker from 'components/AuthChecker/AuthChecker';
 import TopProgressBar from 'containers/Loading/ProgressBar';
 import Snackbar from 'components/Common/Snackbar/Snackbar';
 import { TokenContext } from 'config/token.context';
 import { TokenPayload } from 'types/auth';
-import { IError, IAppProps } from 'types/app';
+import { IError, IAppProps, IGlobalError } from 'types/app';
+import 'styles/globals.css';
+import theme from 'theme/theme';
+import 'translations/i18n';
 
 const { publicRuntimeConfig } = getConfig();
 axios.defaults.baseURL = publicRuntimeConfig.apiEndPoint;
 axios.defaults.withCredentials = true;
 setupInterceptors(axios);
 
+const NoopLayout: React.FC = ({ children }) => children as React.ReactElement;
+
 export default function MyApp({ Component, pageProps }: IAppProps) {
   const { locale } = useRouter();
-  // TODO: better type check for errors
-  const [error, setError] = useState<unknown>(null);
+  const [error, setError] = useState<IGlobalError>(null);
   const [accessToken, setAccessToken] = useState('');
   // const _isPublicRoute = Component.isGuestPage || false;
+  const Layout = Component.Layout || NoopLayout;
 
   useEffect(() => {
     i18n.changeLanguage(locale);
@@ -76,11 +78,7 @@ export default function MyApp({ Component, pageProps }: IAppProps) {
             const errResponse = error.response?.data;
             if (errResponse.statusCode === 401) {
               try {
-                const tokenData = await axios.get<TokenPayload>(
-                  '/v1/api/refresh-token'
-                );
-                setToken(tokenData.data.accessToken);
-                setupInterceptors(axios, tokenData.data?.accessToken);
+                await renewAccessToken();
                 mutation.options.mutationFn?.(variable);
               } catch (err) {
                 console.error(err);
@@ -125,17 +123,20 @@ export default function MyApp({ Component, pageProps }: IAppProps) {
   return (
     <TokenContext.Provider value={{ accessToken, setToken }}>
       <QueryClientProvider client={queryClient}>
-        <AuthChecker />
-        <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={theme}>
-            <StyledThemeProvider theme={theme}>
-              <CssBaseline />
-              <TopProgressBar />
-              <Component {...pageProps} />
-              {renderErrorMessage(error as IError)}
-            </StyledThemeProvider>
-          </ThemeProvider>
-        </StyledEngineProvider>
+        <AuthChecker>
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>
+              <StyledThemeProvider theme={theme}>
+                <Layout>
+                  <CssBaseline />
+                  <TopProgressBar />
+                  <Component {...pageProps} />
+                </Layout>
+                {renderErrorMessage(error as IError)}
+              </StyledThemeProvider>
+            </ThemeProvider>
+          </StyledEngineProvider>
+        </AuthChecker>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </TokenContext.Provider>
