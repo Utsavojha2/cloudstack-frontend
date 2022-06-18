@@ -14,16 +14,20 @@ import i18n from 'i18next';
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
+import { AppContext, AppDispatchContext } from 'config/token.context';
 import setupInterceptors from 'config/interceptor';
 import AuthChecker from 'components/AuthChecker/AuthChecker';
 import TopProgressBar from 'containers/Loading/ProgressBar';
 import Snackbar from 'components/Common/Snackbar/Snackbar';
-import { TokenContext } from 'config/token.context';
 import { TokenPayload } from 'types/auth';
-import { IError, IAppProps, IGlobalError } from 'types/app';
+import { IError, IAppProps } from 'types/app';
 import 'styles/globals.css';
 import theme from 'theme/theme';
 import 'translations/i18n';
+import { getToastErrorMessages } from 'utils';
+import PublicRouteWrapper from 'components/PublicRouteWrapper/PublicRouteWrapper';
+import ConfirmAccountWrapper from 'components/ConfirmAccountWrapper/ConfirmAccountWrapper';
+import ToastContextProvider from 'components/ToastProvider/ToastProvider';
 
 const { publicRuntimeConfig } = getConfig();
 axios.defaults.baseURL = publicRuntimeConfig.apiEndPoint;
@@ -34,9 +38,11 @@ const NoopLayout: React.FC = ({ children }) => children as React.ReactElement;
 
 export default function MyApp({ Component, pageProps }: IAppProps) {
   const { locale } = useRouter();
-  const [error, setError] = useState<IGlobalError>(null);
+  const [error, setError] = useState<IError>(null);
   const [accessToken, setAccessToken] = useState('');
-  // const _isPublicRoute = Component.isGuestPage || false;
+  const [isTokenRefreshing, setIsRefreshTokenRefreshing] = useState(false);
+
+  const isPublicRoute = Component.isGuestPage || false;
   const Layout = Component.Layout || NoopLayout;
 
   useEffect(() => {
@@ -47,13 +53,14 @@ export default function MyApp({ Component, pageProps }: IAppProps) {
     setAccessToken(token);
   };
 
+  const resetErrorMessage = () => setError(null);
+
   const renewAccessToken = async () => {
     const tokenData = await axios.get<TokenPayload>('/v1/api/refresh-token');
     setToken(tokenData.data.accessToken);
     setupInterceptors(axios, tokenData.data?.accessToken);
   };
 
-  // For global error handling
   const queryClient = useMemo(() => {
     return new QueryClient({
       queryCache: new QueryCache({
@@ -61,10 +68,13 @@ export default function MyApp({ Component, pageProps }: IAppProps) {
           if (axios.isAxiosError(error)) {
             if (error?.response?.data.statusCode === 401) {
               try {
+                setIsRefreshTokenRefreshing(true);
                 await renewAccessToken();
                 queryClient.refetchQueries(query.queryKey);
               } catch (err) {
                 console.error(err);
+              } finally {
+                setIsRefreshTokenRefreshing(false);
               }
               return;
             }
@@ -78,10 +88,13 @@ export default function MyApp({ Component, pageProps }: IAppProps) {
             const errResponse = error.response?.data;
             if (errResponse.statusCode === 401) {
               try {
+                setIsRefreshTokenRefreshing(true);
                 await renewAccessToken();
                 mutation.options.mutationFn?.(variable);
               } catch (err) {
                 console.error(err);
+              } finally {
+                setIsRefreshTokenRefreshing(false);
               }
               return;
             }
@@ -91,7 +104,7 @@ export default function MyApp({ Component, pageProps }: IAppProps) {
       }),
       defaultOptions: {
         queries: {
-          refetchOnWindowFocus: true,
+          refetchOnWindowFocus: false,
         },
       },
     });
@@ -100,45 +113,72 @@ export default function MyApp({ Component, pageProps }: IAppProps) {
   const renderErrorMessage = (responseError: IError) => {
     if (!responseError) return;
     if (isArray(responseError.message)) {
-      return responseError.message.map((errormessage: string, idx) => (
-        <Snackbar
-          key={`${errormessage}-${idx.toString()}`}
-          open
-          toastMessage={errormessage}
-          onClose={() => setError(null)}
-          severity="error"
-        />
-      ));
+      const errorMessages = getToastErrorMessages(responseError.message);
+      return errorMessages.map((msg, idx) => {
+        return (
+          <Snackbar
+            key={`${msg.errormessage}-${idx.toString()}`}
+            open
+            toastMessage={msg.errormessage}
+            onClose={resetErrorMessage}
+            severity="error"
+            style={{
+              top: `${msg.top}px`,
+            }}
+          />
+        );
+      });
     }
     return (
       <Snackbar
         open
-        onClose={() => setError(null)}
+        onClose={resetErrorMessage}
         toastMessage={responseError?.message}
         severity="error"
       />
     );
   };
 
+  const renderAppContent = () => {
+    return (
+      <Layout>
+        <CssBaseline />
+        <Component {...pageProps} />
+      </Layout>
+    );
+  };
+
   return (
-    <TokenContext.Provider value={{ accessToken, setToken }}>
-      <QueryClientProvider client={queryClient}>
-        <AuthChecker>
-          <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={theme}>
-              <StyledThemeProvider theme={theme}>
-                <Layout>
-                  <CssBaseline />
-                  <TopProgressBar />
-                  <Component {...pageProps} />
-                </Layout>
-                {renderErrorMessage(error as IError)}
-              </StyledThemeProvider>
-            </ThemeProvider>
-          </StyledEngineProvider>
-        </AuthChecker>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </TokenContext.Provider>
+    <AppContext.Provider value={{ accessToken }}>
+      <AppDispatchContext.Provider value={{ setToken }}>
+        <ToastContextProvider>
+          <QueryClientProvider client={queryClient}>
+            <StyledEngineProvider injectFirst>
+              <ThemeProvider theme={theme}>
+                <StyledThemeProvider theme={theme}>
+                  {isPublicRoute ? (
+                    <ConfirmAccountWrapper
+                      isConfirmationPage={Component.isConfirmAccountPage}
+                    >
+                      <PublicRouteWrapper isTokenRefreshing={isTokenRefreshing}>
+                        <TopProgressBar />
+                        {renderAppContent()}
+                      </PublicRouteWrapper>
+                    </ConfirmAccountWrapper>
+                  ) : (
+                    <AuthChecker isTokenRefreshing={isTokenRefreshing}>
+                      <TopProgressBar />
+                      {renderAppContent()}
+                    </AuthChecker>
+                  )}
+                  {renderErrorMessage(error)}
+                </StyledThemeProvider>
+              </ThemeProvider>
+            </StyledEngineProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+        </ToastContextProvider>
+      </AppDispatchContext.Provider>
+    </AppContext.Provider>
   );
 }

@@ -14,7 +14,8 @@ import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import setupInterceptors from 'config/interceptor';
-import useTokenContext from 'config/token.context';
+import { AppDispatchContext } from 'config/token.context';
+import useAppContext from 'config/app.context';
 import { H1, H3 } from 'components/Common/Typography/Typography';
 import InputForm from 'components/Form/InputForm/InputForm';
 import { MuiPrimaryButton } from 'components/Common/Buttons/Buttons';
@@ -23,8 +24,8 @@ import { isRequiredValidation } from 'utils';
 
 const Login = () => {
   const queryClient = useQueryClient();
-  const { push } = useRouter();
-  const { setToken } = useTokenContext();
+  const { push, query } = useRouter();
+  const { setToken } = useAppContext(AppDispatchContext);
   const { t: translateText } = useTranslation();
 
   const loginValidationSchema: SchemaOf<LoginAuth> = object().shape({
@@ -46,7 +47,10 @@ const Login = () => {
   });
 
   const onLoginRequest = async (loginPayload: LoginAuth) => {
-    return axios.post<Required<TokenPayload>>('/v1/api/login', loginPayload);
+    return axios.post<Required<TokenPayload>>(
+      `/v1/api/login${query.token ? `?token=${query.token}` : ''}`,
+      loginPayload
+    );
   };
 
   const { mutate } = useMutation(onLoginRequest, {
@@ -58,6 +62,7 @@ const Login = () => {
         push('/auth/verify');
         return;
       }
+      push('/feed');
       // route to feed or redirecting url
     },
   });

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { useIsFetching, useIsMutating } from 'react-query';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 
 export default function ProgressBar() {
+  const router = useRouter();
   const isCurrentlyFetching = useIsFetching();
   const isCurrentlyMutating = useIsMutating();
   const [isLoading, setIsLoading] = useState(false);
@@ -18,14 +19,14 @@ export default function ProgressBar() {
   };
 
   useEffect(() => {
-    Router.events.on('routeChangeStart', onRouteChangeStart);
-    Router.events.on('routeChangeComplete', onRouteChangePromiseSettled);
-    Router.events.on('routeChangeError', onRouteChangePromiseSettled);
+    router.events.on('routeChangeStart', onRouteChangeStart);
+    router.events.on('routeChangeComplete', onRouteChangePromiseSettled);
+    router.events.on('routeChangeError', onRouteChangePromiseSettled);
 
     return () => {
-      Router.events.off('routeChangeStart', onRouteChangeStart);
-      Router.events.off('routeChangeComplete', onRouteChangePromiseSettled);
-      Router.events.off('routeChangeError', onRouteChangePromiseSettled);
+      router.events.off('routeChangeStart', onRouteChangeStart);
+      router.events.off('routeChangeComplete', onRouteChangePromiseSettled);
+      router.events.off('routeChangeError', onRouteChangePromiseSettled);
     };
   }, []);
 

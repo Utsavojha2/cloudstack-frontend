@@ -6,6 +6,7 @@ interface ToastbarProps extends SnackbarProps {
   onClose: () => void;
   toastMessage: string;
   severity?: 'success' | 'error' | 'info' | 'warning';
+  hidingDuration?: number;
 }
 
 const Alert: React.FC<AlertProps> = React.forwardRef<
@@ -19,6 +20,7 @@ const MuiSnackbar: React.FC<ToastbarProps> = ({
   onClose,
   toastMessage,
   severity = 'success',
+  hidingDuration = 3000,
   ...props
 }) => {
   return (
@@ -26,7 +28,7 @@ const MuiSnackbar: React.FC<ToastbarProps> = ({
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       onClose={onClose}
       key={toastMessage}
-      autoHideDuration={3000}
+      autoHideDuration={hidingDuration}
       {...props}
     >
       <Alert onClose={onClose} severity={severity} sx={{ width: '100%' }}>

@@ -1,17 +1,16 @@
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 
 type ITokenContext = {
-  accessToken: string;
-  setToken: (val: string, callbackFn?: () => void) => void;
+  accessToken: string | null;
+  setToken: (token: string) => void;
 };
 
 const contextDefaultValues: ITokenContext = {
-  accessToken: '',
+  accessToken: null,
   setToken: () => null,
 };
 
-export const TokenContext = createContext<ITokenContext>(contextDefaultValues);
-
-export default function useTokenContext() {
-  return useContext(TokenContext);
-}
+export const AppContext =
+  createContext<Pick<ITokenContext, 'accessToken'>>(contextDefaultValues);
+export const AppDispatchContext =
+  createContext<Pick<ITokenContext, 'setToken'>>(contextDefaultValues);

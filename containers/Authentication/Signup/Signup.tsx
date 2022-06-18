@@ -19,8 +19,13 @@ import { RegisterAuth } from 'types/auth';
 import { differenceInYears, isDate } from 'date-fns';
 import { parseDateString } from 'utils';
 import { isRequiredValidation } from 'utils';
+import useAppContext from 'config/app.context';
+import { useRouter } from 'next/router';
+import { ToastContext } from 'config/toast.context';
 
 const Login = () => {
+  const router = useRouter();
+  const { showMessage } = useAppContext(ToastContext);
   const { t: translateText } = useTranslation();
 
   const registerValidationSchema: SchemaOf<RegisterAuth> = object().shape({
@@ -60,7 +65,15 @@ const Login = () => {
     return axios.post('/v1/api/register-user', registerPayload);
   };
 
-  const { mutate } = useMutation(onAccountRegistrationRequest);
+  const { mutate } = useMutation(onAccountRegistrationRequest, {
+    onSuccess: (response) => {
+      router.push('/auth/login').then(() => {
+        showMessage(
+          `Account created. Please check your email address at ${response.data.email} to confirm your account`
+        );
+      });
+    },
+  });
   const onUserRegistration = (data: RegisterAuth) => mutate(data);
 
   return (
