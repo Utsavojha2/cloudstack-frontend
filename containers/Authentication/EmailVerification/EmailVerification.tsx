@@ -7,9 +7,26 @@ import styled from 'styled-components';
 import { H1, P1 } from 'components/Common/Typography/Typography';
 import { MuiPrimaryButton } from 'components/Common/Buttons/Buttons';
 import { MailOutlineOutlined } from '@mui/icons-material';
+import useAppContext from 'config/app.context';
+import { useAuth } from 'hooks/query/useAuth';
+import { useResendMail } from 'hooks/query/useResendMail';
+import { ToastContext } from 'config/toast.context';
 
 const EmailVerification = () => {
-  const onResendVerificationEmail = () => null;
+  const { showMessage } = useAppContext(ToastContext);
+  const { data, isLoading, isError, refetch } = useAuth({ enabled: false });
+
+  const { mutate } = useResendMail(data?.id as string, {
+    onSuccess: () => {
+      showMessage('Verification email has been sent');
+      refetch();
+    },
+  });
+
+  const isEligibleForAnotherEmail =
+    new Date().getDate() -
+      new Date(data?.confirmAccountTokenUpdatedAt as string).getDate() >=
+    2;
 
   return (
     <GridContainer container alignItems="center" justifyContent="center">
@@ -27,11 +44,20 @@ const EmailVerification = () => {
             </P1>
           </VerificationTextContainer>
           <Box>
-            <MuiPrimaryButton onClick={onResendVerificationEmail}>
+            <MuiPrimaryButton
+              onClick={() => mutate()}
+              disabled={
+                isLoading ||
+                isError ||
+                !!data?.is_verified ||
+                !isEligibleForAnotherEmail
+              }
+            >
               <MailOutlineOutlined sx={{ mr: 2 }} />
               Resend Email
             </MuiPrimaryButton>
           </Box>
+          {isEligibleForAnotherEmail ? null : <Box>PS: Check your spam!</Box>}
         </Stack>
       </GridItem>
     </GridContainer>

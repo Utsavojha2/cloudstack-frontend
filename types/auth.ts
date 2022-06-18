@@ -11,5 +11,14 @@ export interface RegisterAuth extends LoginAuth {
 
 export interface TokenPayload {
   accessToken: string;
-  is_verified?: boolean;
+  is_verified: boolean;
+}
+
+export interface UserResponse {
+  id: string;
+  email: string;
+  fullName: string;
+  birthDate: Date;
+  is_verified: boolean;
+  confirmAccountTokenUpdatedAt: string;
 }

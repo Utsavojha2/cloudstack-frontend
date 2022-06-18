@@ -2,7 +2,8 @@ import React from 'react';
 import AuthLayout from 'layouts/AuthLayout/AuthLayout';
 import ForgotPassword from 'containers/Authentication/ForgotPassword/ForgotPassword';
 
-const SignIn = () => <ForgotPassword />;
-SignIn.Layout = AuthLayout;
+const ForgotPasswordPage = () => <ForgotPassword />;
+ForgotPasswordPage.Layout = AuthLayout;
+ForgotPasswordPage.isGuestPage = true;
 
-export default SignIn;
+export default ForgotPasswordPage;

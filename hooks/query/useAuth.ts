@@ -1,13 +1,12 @@
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
+import { UserResponse } from 'types/auth';
 
 const isLoggedIn = async () => {
-  const response = await axios.get('/v1/api/user/me');
-  return response;
+  const response = await axios.get<UserResponse>('/v1/api/user/me');
+  return response.data;
 };
 
-export const useAuth = () => {
-  return useQuery('/current-user', isLoggedIn, {
-    retry: false,
-  });
+export const useAuth = (options?: UseQueryOptions<UserResponse>) => {
+  return useQuery('/current-user' as QueryKey, isLoggedIn, options);
 };
