@@ -1,8 +1,9 @@
 import { createContext } from 'react';
+import { ITokenType } from 'types/auth';
 
 type ITokenContext = {
-  accessToken: string | null;
-  setToken: (token: string) => void;
+  accessToken: ITokenType;
+  setToken: (token: ITokenType) => void;
 };
 
 const contextDefaultValues: ITokenContext = {

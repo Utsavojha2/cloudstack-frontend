@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { useMutation, UseMutationOptions } from 'react-query';
+import { axiosInstance } from 'config/axios.config';
 
 const resendAccountConfirmationMailRequest = async (userId: string) => {
-  const response = await axios.post(
+  const response = await axiosInstance.post(
     `/v1/api/${userId}/send-account-confirmation`
   );
   return response;

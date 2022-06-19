@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import { axiosInstance } from 'config/axios.config';
+import { useMutation } from 'react-query';
 import {
+  Box,
   Divider,
   Grid,
   IconButton,
@@ -11,45 +15,56 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import CopyrightIcon from '@mui/icons-material/Copyright';
+import { CloseOutlined } from '@mui/icons-material';
+import {
+  MuiPrimaryButton,
+  MuiSecondaryButton,
+} from 'components/Common/Buttons/Buttons';
+import AlertDialogSlide from 'components/Common/AlertDialog/AlertDialog';
 import { H1, H2, H3, P1, P2 } from 'components/Common/Typography/Typography';
 import { navigationItems } from 'components/Layout/Sidebar/helpers';
-import styles from './styles';
+import * as Styled from 'components/Layout/Sidebar/Sidebar.styles';
 import theme from 'theme/theme';
-import { CloseOutlined } from '@mui/icons-material';
+import { ToastContext } from 'config/toast.context';
+import useAppContext from 'config/app.context';
+import { FeedContext } from 'config/feed.context';
 
-const Sidebar = () => {
-  const {
-    MuiSidebar,
-    BrandLogo,
-    UserLogoWrapper,
-    UserHeaderWrapper,
-    UserHandle,
-    UserFeedInfo,
-    DrawerHeader,
-  } = styles;
-  const isScreenSizeMedium = useMediaQuery(theme.breakpoints.up('md'));
-  const [isDrawerOpen, setIsDrawerOpen] = useState(isScreenSizeMedium);
+const Sidebar: React.FC = () => {
+  const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { showMessage } = useAppContext(ToastContext);
+  const isScreenSizeMedium = useMediaQuery(theme.breakpoints.up('lg'));
+  const { isOpen, closeDrawer } = useAppContext(FeedContext);
+  const isBackgroundOverlay = isOpen && !isScreenSizeMedium;
 
-  useEffect(() => {
-    setIsDrawerOpen(isScreenSizeMedium);
-  }, [isScreenSizeMedium]);
-
-  const handleDrawerClose = () => {
-    setIsDrawerOpen(false);
+  const onLogoutActionRequest = async () => {
+    return await axiosInstance.post('/v1/api/logout');
   };
 
+  const { mutate } = useMutation(onLogoutActionRequest, {
+    onSuccess: () => {
+      showMessage('You are now logged out');
+      router.reload();
+    },
+  });
+
   return (
-    <MuiSidebar variant="persistent" anchor="left" open={isDrawerOpen}>
-      <DrawerHeader>
-        <IconButton onClick={handleDrawerClose}>
+    <Styled.MuiSidebar
+      variant="persistent"
+      anchor="left"
+      open={isOpen}
+      isOverlay={isBackgroundOverlay}
+    >
+      <Styled.DrawerHeader>
+        <IconButton onClick={closeDrawer}>
           <CloseOutlined />
         </IconButton>
-      </DrawerHeader>
+      </Styled.DrawerHeader>
 
       <Grid container spacing={2} justifyContent="center" sx={{ mt: 2 }}>
         <Grid item md={4}>
           <Grid container justifyContent="flex-end">
-            <BrandLogo src={'/logo.png'} alt="" />
+            <Styled.BrandLogo src={'/logo.png'} alt="" />
           </Grid>
         </Grid>
         <Grid item md={8}>
@@ -65,40 +80,40 @@ const Sidebar = () => {
       </Grid>
 
       <Grid container justifyContent="center" sx={{ mt: 5 }}>
-        <UserLogoWrapper>
+        <Styled.UserLogoWrapper>
           <img
             src={
               'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&w=1000&q=80'
             }
             alt=""
           />
-        </UserLogoWrapper>
+        </Styled.UserLogoWrapper>
       </Grid>
 
       <Grid container justifyContent="center" sx={{ mt: 2 }}>
         <Grid item md={10}>
-          <UserHeaderWrapper>
+          <Styled.UserHeaderWrapper>
             <H2>Utsav Ojha</H2>
-            <UserHandle>@utsavojha2</UserHandle>
-          </UserHeaderWrapper>
+            <Styled.UserHandle>@utsavojha2</Styled.UserHandle>
+          </Styled.UserHeaderWrapper>
         </Grid>
       </Grid>
 
       <Grid container justifyContent="center" sx={{ mt: 4 }}>
         <Grid item xs={4}>
-          <UserFeedInfo container direction="column" alignItems="center">
+          <Styled.UserFeedInfo container direction="column" alignItems="center">
             <P1>42</P1>
             <P2>Posts</P2>
-          </UserFeedInfo>
+          </Styled.UserFeedInfo>
         </Grid>
         <Grid item xs={4}>
-          <UserFeedInfo container direction="column" alignItems="center">
+          <Styled.UserFeedInfo container direction="column" alignItems="center">
             <P1>2.8k</P1>
             <P2>Followers</P2>
-          </UserFeedInfo>
+          </Styled.UserFeedInfo>
         </Grid>
         <Grid item xs={4}>
-          <UserFeedInfo
+          <Styled.UserFeedInfo
             container
             direction="column"
             alignItems="center"
@@ -106,15 +121,20 @@ const Sidebar = () => {
           >
             <P1>526</P1>
             <P2>Following</P2>
-          </UserFeedInfo>
+          </Styled.UserFeedInfo>
         </Grid>
       </Grid>
 
       <Toolbar />
       <Divider />
       <List>
-        {navigationItems.map(({ name, icon: ItemIcon }) => (
-          <ListItem button key={name} sx={{ px: 5 }}>
+        {navigationItems.map(({ name, icon: ItemIcon, isAsyncAction }) => (
+          <ListItem
+            button
+            key={name}
+            sx={{ px: 5 }}
+            onClick={() => setIsModalOpen(!!isAsyncAction)}
+          >
             <ListItemIcon sx={{ minWidth: '40px' }}>
               <ItemIcon />
             </ListItemIcon>
@@ -124,9 +144,7 @@ const Sidebar = () => {
       </List>
       <Divider />
       <Grid container justifyContent="cente" sx={{ mt: 'auto', mb: 2 }}>
-        <Grid item md={12}>
-          {/* <Divider /> */}
-        </Grid>
+        <Grid item md={12}></Grid>
         <Grid item md={8} sx={{ ml: 3, mt: 2 }}>
           <Grid container justifyContent="" alignItems="center">
             <CopyrightIcon />
@@ -137,7 +155,26 @@ const Sidebar = () => {
           </Grid>
         </Grid>
       </Grid>
-    </MuiSidebar>
+      <AlertDialogSlide
+        isOpen={isModalOpen}
+        handleClose={() => setIsModalOpen(false)}
+        title="Are you sure you want to logout?"
+        contentMessage="You will be logged out of the application and insert in your credentials again if you want to log in."
+        renderDialogActions={() => (
+          <Box sx={{ pb: 1 }}>
+            <MuiSecondaryButton
+              onClick={() => setIsModalOpen(false)}
+              sx={{ mr: 2 }}
+            >
+              Cancel
+            </MuiSecondaryButton>
+            <MuiPrimaryButton onClick={() => mutate()} sx={{ mr: 3 }}>
+              Logout
+            </MuiPrimaryButton>
+          </Box>
+        )}
+      />
+    </Styled.MuiSidebar>
   );
 };
 

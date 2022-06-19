@@ -23,6 +23,7 @@ export const navigationItems = [
   },
   {
     name: 'Log Out',
+    isAsyncAction: true,
     icon: LogoutIcon,
   },
 ];

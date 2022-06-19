@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useMutation, useQueryClient } from 'react-query';
-import axios from 'axios';
+import { axiosInstance } from 'config/axios.config';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object, SchemaOf } from 'yup';
 import { useTranslation } from 'react-i18next';
@@ -13,22 +13,21 @@ import { Box } from '@mui/system';
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import setupInterceptors from 'config/interceptor';
 import { AppDispatchContext } from 'config/token.context';
 import useAppContext from 'config/app.context';
 import { H1, H3 } from 'components/Common/Typography/Typography';
 import InputForm from 'components/Form/InputForm/InputForm';
 import { MuiPrimaryButton } from 'components/Common/Buttons/Buttons';
-import { LoginAuth, TokenPayload } from 'types/auth';
+import { ILoginAuth, ITokenPayload } from 'types/auth';
 import { isRequiredValidation } from 'utils';
 
 const Login = () => {
   const queryClient = useQueryClient();
-  const { push, query } = useRouter();
+  const { push } = useRouter();
   const { setToken } = useAppContext(AppDispatchContext);
   const { t: translateText } = useTranslation();
 
-  const loginValidationSchema: SchemaOf<LoginAuth> = object().shape({
+  const loginValidationSchema: SchemaOf<ILoginAuth> = object().shape({
     email: string()
       .required(isRequiredValidation('email'))
       .email(translateText('invalidEmail')),
@@ -38,7 +37,7 @@ const Login = () => {
       .max(40, translateText('maxPasswordLengthError')),
   });
 
-  const methods = useForm<LoginAuth>({
+  const methods = useForm<ILoginAuth>({
     mode: 'onChange',
     resolver: yupResolver(loginValidationSchema),
     shouldFocusError: true,
@@ -46,9 +45,9 @@ const Login = () => {
     reValidateMode: 'onChange',
   });
 
-  const onLoginRequest = async (loginPayload: LoginAuth) => {
-    return axios.post<Required<TokenPayload>>(
-      `/v1/api/login${query.token ? `?token=${query.token}` : ''}`,
+  const onLoginRequest = async (loginPayload: ILoginAuth) => {
+    return axiosInstance.post<Required<ITokenPayload>>(
+      '/v1/api/login',
       loginPayload
     );
   };
@@ -56,18 +55,16 @@ const Login = () => {
   const { mutate } = useMutation(onLoginRequest, {
     onSuccess: (response) => {
       setToken(response.data?.accessToken);
-      setupInterceptors(axios, response.data?.accessToken);
       queryClient.invalidateQueries('/current-user');
       if (!response.data?.is_verified) {
         push('/auth/verify');
         return;
       }
       push('/feed');
-      // route to feed or redirecting url
     },
   });
 
-  const onUserLogin = (data: LoginAuth) => mutate(data);
+  const onUserLogin = (data: ILoginAuth) => mutate(data);
 
   return (
     <CardContent>

@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { isArray } from 'lodash';
-import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import {
   MutationCache,
@@ -15,11 +14,11 @@ import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { AppContext, AppDispatchContext } from 'config/token.context';
-import setupInterceptors from 'config/interceptor';
+import { axiosInstance } from 'config/axios.config';
 import AuthChecker from 'components/AuthChecker/AuthChecker';
 import TopProgressBar from 'containers/Loading/ProgressBar';
 import Snackbar from 'components/Common/Snackbar/Snackbar';
-import { TokenPayload } from 'types/auth';
+import { ITokenPayload, ITokenType } from 'types/auth';
 import { IError, IAppProps } from 'types/app';
 import 'styles/globals.css';
 import theme from 'theme/theme';
@@ -29,19 +28,15 @@ import PublicRouteWrapper from 'components/PublicRouteWrapper/PublicRouteWrapper
 import ConfirmAccountWrapper from 'components/ConfirmAccountWrapper/ConfirmAccountWrapper';
 import ToastContextProvider from 'components/ToastProvider/ToastProvider';
 
-const { publicRuntimeConfig } = getConfig();
-axios.defaults.baseURL = publicRuntimeConfig.apiEndPoint;
-axios.defaults.withCredentials = true;
-setupInterceptors(axios);
-
 const NoopLayout: React.FC = ({ children }) => children as React.ReactElement;
 
 export default function MyApp({ Component, pageProps }: IAppProps) {
   const { locale } = useRouter();
   const [error, setError] = useState<IError>(null);
-  const [accessToken, setAccessToken] = useState('');
+  const [accessToken, setAccessToken] = useState<ITokenType>(null);
   const [isTokenRefreshing, setIsRefreshTokenRefreshing] = useState(false);
 
+  const isConfirmAccountPage = Component.isConfirmAccountPage || false;
   const isPublicRoute = Component.isGuestPage || false;
   const Layout = Component.Layout || NoopLayout;
 
@@ -49,16 +44,27 @@ export default function MyApp({ Component, pageProps }: IAppProps) {
     i18n.changeLanguage(locale);
   }, [locale]);
 
-  const setToken = (token: string) => {
+  useEffect(() => {
+    axiosInstance.interceptors.request.use((config) => {
+      config.headers!['Content-Type'] = 'application/json';
+      if (accessToken) {
+        config.headers!['Authorization'] = `Bearer ${accessToken}`;
+      }
+      return config;
+    });
+  }, [accessToken]);
+
+  const setToken = (token: ITokenType) => {
     setAccessToken(token);
   };
 
   const resetErrorMessage = () => setError(null);
 
   const renewAccessToken = async () => {
-    const tokenData = await axios.get<TokenPayload>('/v1/api/refresh-token');
+    const tokenData = await axiosInstance.get<ITokenPayload>(
+      '/v1/api/refresh-token'
+    );
     setToken(tokenData.data.accessToken);
-    setupInterceptors(axios, tokenData.data?.accessToken);
   };
 
   const queryClient = useMemo(() => {
@@ -139,12 +145,28 @@ export default function MyApp({ Component, pageProps }: IAppProps) {
     );
   };
 
-  const renderAppContent = () => {
+  const renderAppComponent = () => {
+    if (isPublicRoute) {
+      return (
+        <ConfirmAccountWrapper isConfirmationPage={isConfirmAccountPage}>
+          <PublicRouteWrapper isTokenRefreshing={isTokenRefreshing}>
+            <TopProgressBar />
+            <Layout>
+              <CssBaseline />
+              <Component {...pageProps} />
+            </Layout>
+          </PublicRouteWrapper>
+        </ConfirmAccountWrapper>
+      );
+    }
     return (
-      <Layout>
-        <CssBaseline />
-        <Component {...pageProps} />
-      </Layout>
+      <AuthChecker isTokenRefreshing={isTokenRefreshing}>
+        <TopProgressBar />
+        <Layout>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </Layout>
+      </AuthChecker>
     );
   };
 
@@ -156,21 +178,7 @@ export default function MyApp({ Component, pageProps }: IAppProps) {
             <StyledEngineProvider injectFirst>
               <ThemeProvider theme={theme}>
                 <StyledThemeProvider theme={theme}>
-                  {isPublicRoute ? (
-                    <ConfirmAccountWrapper
-                      isConfirmationPage={Component.isConfirmAccountPage}
-                    >
-                      <PublicRouteWrapper isTokenRefreshing={isTokenRefreshing}>
-                        <TopProgressBar />
-                        {renderAppContent()}
-                      </PublicRouteWrapper>
-                    </ConfirmAccountWrapper>
-                  ) : (
-                    <AuthChecker isTokenRefreshing={isTokenRefreshing}>
-                      <TopProgressBar />
-                      {renderAppContent()}
-                    </AuthChecker>
-                  )}
+                  {renderAppComponent()}
                   {renderErrorMessage(error)}
                 </StyledThemeProvider>
               </ThemeProvider>
