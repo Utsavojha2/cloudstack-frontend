@@ -37,7 +37,7 @@ npm run test
 - Signup/Login UI design
 - Authentication integration with Node.js
 - Feed UI design (IN PROGRESS)
-- End to end tests with Cypress (IN PROGRESS)
+- Setup End to end tests with Cypress (IN PROGRESS)
 
 ## Learn More
 
