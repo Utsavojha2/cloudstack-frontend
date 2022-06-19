@@ -3,7 +3,7 @@ import { useAuth } from 'hooks/query/useAuth';
 import RedirectingView from 'components/RedirectingView/RedirectingView';
 import { useRouter } from 'next/router';
 import { isEqual } from 'lodash';
-import { UserResponse } from 'types/auth';
+import { IUserResponse } from 'types/auth';
 
 interface AuthCheckerProps {
   isTokenRefreshing: boolean;
@@ -15,7 +15,7 @@ export default function AuthChecker({
 }: React.PropsWithChildren<AuthCheckerProps>) {
   const router = useRouter();
   const [isRedirecting, setIsRedirecting] = useState(false);
-  const [loggedInStatus, setLoggedInStatus] = useState<UserResponse | null>(
+  const [loggedInStatus, setLoggedInStatus] = useState<IUserResponse | null>(
     null
   );
 

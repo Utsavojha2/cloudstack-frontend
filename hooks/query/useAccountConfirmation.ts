@@ -1,11 +1,13 @@
-import axios from 'axios';
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query';
-import { TokenPayload } from 'types/auth';
+import { ITokenPayload } from 'types/auth';
+import { axiosInstance } from 'config/axios.config';
 
-type ConfirmationTokenPayload = Pick<TokenPayload, 'accessToken'>;
+type ConfirmationTokenPayload = Pick<ITokenPayload, 'accessToken'>;
 
 const getConfirmationStatus = async (token: string) => {
-  const response = await axios.get(`/v1/api/account-confirmation/${token}`);
+  const response = await axiosInstance.get(
+    `/v1/api/account-confirmation/${token}`
+  );
   return response.data;
 };
 

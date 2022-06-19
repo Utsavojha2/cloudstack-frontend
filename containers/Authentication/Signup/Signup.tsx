@@ -1,7 +1,8 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
-import axios from 'axios';
+import { axiosInstance } from 'config/axios.config';
 import { useMutation } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
@@ -15,12 +16,11 @@ import { H1, H3 } from 'components/Common/Typography/Typography';
 import InputForm from 'components/Form/InputForm/InputForm';
 import { MuiPrimaryButton } from 'components/Common/Buttons/Buttons';
 import DatePicker from 'components/Form/DatePicker/DatePicker';
-import { RegisterAuth } from 'types/auth';
+import { IRegisterAuth } from 'types/auth';
 import { differenceInYears, isDate } from 'date-fns';
 import { parseDateString } from 'utils';
 import { isRequiredValidation } from 'utils';
 import useAppContext from 'config/app.context';
-import { useRouter } from 'next/router';
 import { ToastContext } from 'config/toast.context';
 
 const Login = () => {
@@ -28,7 +28,7 @@ const Login = () => {
   const { showMessage } = useAppContext(ToastContext);
   const { t: translateText } = useTranslation();
 
-  const registerValidationSchema: SchemaOf<RegisterAuth> = object().shape({
+  const registerValidationSchema: SchemaOf<IRegisterAuth> = object().shape({
     fullName: string()
       .required(isRequiredValidation('fullName'))
       .max(20, translateText('maxNameLengthError')),
@@ -53,7 +53,7 @@ const Login = () => {
       }),
   });
 
-  const methods = useForm<RegisterAuth>({
+  const methods = useForm<IRegisterAuth>({
     mode: 'onChange',
     resolver: yupResolver(registerValidationSchema),
     shouldFocusError: true,
@@ -61,8 +61,8 @@ const Login = () => {
     reValidateMode: 'onChange',
   });
 
-  const onAccountRegistrationRequest = (registerPayload: RegisterAuth) => {
-    return axios.post('/v1/api/register-user', registerPayload);
+  const onAccountRegistrationRequest = (registerPayload: IRegisterAuth) => {
+    return axiosInstance.post('/v1/api/register-user', registerPayload);
   };
 
   const { mutate } = useMutation(onAccountRegistrationRequest, {
@@ -74,7 +74,7 @@ const Login = () => {
       });
     },
   });
-  const onUserRegistration = (data: RegisterAuth) => mutate(data);
+  const onUserRegistration = (data: IRegisterAuth) => mutate(data);
 
   return (
     <CardContent>

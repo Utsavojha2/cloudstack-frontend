@@ -71,9 +71,7 @@ export const MuiSecondaryButton = styled(({ ...rest }) => (
       fill:${theme.palette.common.white};
     }
     &:hover {
-      background-color: ${theme.palette.accent.offWhite};
-      color:${theme.palette.accent.offBlack};
-      border-color: ${theme.palette.accent.offBlack};
+      opacity: 0.8;
     }
     &:disabled{
       color:${theme.palette.grey[200]};

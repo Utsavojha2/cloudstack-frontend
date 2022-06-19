@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import setupInterceptors from 'config/interceptor';
 import { AppDispatchContext } from 'config/token.context';
 import useAppContext from 'config/app.context';
 import RedirectingView from 'components/RedirectingView/RedirectingView';
 import { useConfirmationStatus } from 'hooks/query/useAccountConfirmation';
 import { useAuth } from 'hooks/query/useAuth';
-import axios from 'axios';
+import { ToastContext } from 'config/toast.context';
 
 interface ConfirmAccountWrapperProps {
   isConfirmationPage?: boolean;
@@ -17,11 +16,12 @@ const ConfirmAccountWrapper: React.FC<ConfirmAccountWrapperProps> = ({
   children,
   isConfirmationPage = false,
 }) => {
-  const { data: userData } = useAuth({
+  const { data: userData, isLoading } = useAuth({
     retry: false,
-    refetchOnMount: 'always',
+    enabled: isConfirmationPage,
   });
   const { setToken } = useAppContext(AppDispatchContext);
+  const { showMessage } = useAppContext(ToastContext);
   const router = useRouter();
   const accountId = router.query.accountId as string;
 
@@ -30,10 +30,11 @@ const ConfirmAccountWrapper: React.FC<ConfirmAccountWrapperProps> = ({
     retry: false,
     onSuccess: (response) => {
       setToken(response.accessToken);
-      setupInterceptors(axios, response?.accessToken);
       router.push('/feed');
+      showMessage('Account Confirmed');
     },
     onError: () => {
+      if (isLoading) return;
       if (!!userData?.is_verified) {
         router.push('/feed');
         return;
@@ -43,18 +44,13 @@ const ConfirmAccountWrapper: React.FC<ConfirmAccountWrapperProps> = ({
   });
 
   useEffect(() => {
-    if (userData?.is_verified) {
-      router.replace('/feed');
-      return;
-    }
     if (router.isReady && !accountId && isConfirmationPage) {
       router.push('/auth/verify');
     }
   }, []);
 
   useEffect(() => {
-    if (accountId) {
-      if (userData && userData?.is_verified) return;
+    if (accountId && userData?.is_verified !== true) {
       refetch();
     }
   }, [userData]);

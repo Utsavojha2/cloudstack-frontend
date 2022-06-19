@@ -1,14 +1,24 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import Sidebar from 'components/Layout/Sidebar/Sidebar';
+import styled from 'styled-components';
+import Box from '@mui/system/Box';
+import { H2 } from 'components/Common/Typography/Typography';
 
-const UserFeed: React.FC = ({ children }) => {
+const UserFeed: React.FC = () => {
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Sidebar />
-      <div>{children}</div>
-    </Box>
+    <UserFeedSection>
+      <HeadingBox>
+        <H2>Feed</H2>
+      </HeadingBox>
+    </UserFeedSection>
   );
 };
+
+const UserFeedSection = styled.section`
+  padding-top: 32px;
+`;
+
+const HeadingBox = styled(Box)`
+  padding-bottom: 16px;
+`;
 
 export default UserFeed;

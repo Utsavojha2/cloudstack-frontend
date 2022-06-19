@@ -29,6 +29,16 @@ npm install
 npm run test
 ```
 
+## Project Timeline
+
+- Setup a create-next-app project with typescript
+- ESLint, Prettier and Husky setup for linting and formatting
+- Set up integration and unit tests with Jest and React Testing Library
+- Signup/Login UI design
+- Authentication integration with Node.js
+- Feed UI design (IN PROGRESS)
+- End to end tests with Cypress (IN PROGRESS)
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

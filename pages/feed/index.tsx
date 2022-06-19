@@ -1,8 +1,13 @@
-import React from 'react'
-import UserFeed from 'containers/UserFeed/UserFeed'
+import React from 'react';
+import UserFeedLayout from 'layouts/FeedLayout/FeedLayout';
+import UserFeed from 'containers/UserFeed/UserFeed';
 
 const Feed = () => {
-  return <UserFeed>hello world</UserFeed>
-}
+  return (
+    <UserFeedLayout>
+      <UserFeed />
+    </UserFeedLayout>
+  );
+};
 
-export default Feed
+export default Feed;
