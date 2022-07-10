@@ -38,3 +38,12 @@ export const getToastErrorMessages = (errors: string[]) => {
     return accumulator;
   }, []);
 };
+
+export const isImageExtensionEligible = (
+  value: string,
+  eligibles: Array<string> = ['jpg', 'jpeg', 'png', 'gif']
+) => {
+  return new RegExp(
+    '(' + eligibles.join('|').replace(/\./g, '\\.') + ')$'
+  ).test(value);
+};

@@ -4,7 +4,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Controller, useFormContext } from 'react-hook-form';
 import { TextField } from '@mui/material';
-import { FormItemProps } from 'types/form';
+import { FormItemProps } from 'types/app';
 
 type DatePickerProps = FormItemProps;
 

@@ -19,3 +19,8 @@ export interface IToastConfig {
   type: 'success' | 'error' | 'info' | 'warning';
   open?: boolean;
 }
+
+export interface FormItemProps {
+  name: string;
+  label: string;
+}

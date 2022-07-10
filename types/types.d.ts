@@ -41,3 +41,9 @@ declare module '@mui/material/Typography' {
     h3: true;
   }
 }
+
+declare module 'emoji-picker-react' {
+  interface IEmojiPickerProps {
+    searchPlaceholder?: string;
+  }
+}
