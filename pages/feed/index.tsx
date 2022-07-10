@@ -10,4 +10,6 @@ const Feed = () => {
   );
 };
 
+Feed.isGuestPage = true;
+
 export default Feed;

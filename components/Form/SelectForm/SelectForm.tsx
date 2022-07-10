@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormItemProps } from 'types/form';
+import { FormItemProps } from 'types/app';
 
 interface SelectFormProps<T> extends FormItemProps {
   selectOptions: Readonly<Array<T>>;

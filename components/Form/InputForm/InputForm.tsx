@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormItemProps } from 'types/form';
+import { FormItemProps } from 'types/app';
 
 type InputFormProps = TextFieldProps &
   FormItemProps & {

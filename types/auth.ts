@@ -23,4 +23,12 @@ export interface IUserResponse {
   confirmAccountTokenUpdatedAt: string;
 }
 
+export interface IUser {
+  id: string;
+  name: string;
+  photoUri: string;
+  emailAddress: string;
+  birthDate: Date;
+}
+
 export type ITokenType = string | null;

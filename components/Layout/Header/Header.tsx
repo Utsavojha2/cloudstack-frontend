@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -12,15 +12,27 @@ import MenuIcon from '@mui/icons-material/Menu';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { MuiPrimaryButton } from 'components/Common/Buttons/Buttons';
 import theme from 'theme/theme';
+import CreatePost from 'containers/FeedPost/CreatePost/CreatePost';
 import useAppContext from 'config/app.context';
 import { FeedContext } from 'config/feed.context';
 
 const Header = () => {
+  const [isFeedModalOpen, setIsFeedModalOpen] = useState(false);
   const isScreenSizeSmallerMd = useMediaQuery(theme.breakpoints.down('md'));
   const { openDrawer } = useAppContext(FeedContext);
 
+  const toggleFeedModal =
+    (open = false) =>
+    () => {
+      setIsFeedModalOpen(open);
+    };
+
   return (
     <Grid container columnSpacing={{ xs: 1, sm: 0, md: 3 }} rowSpacing={2}>
+      <CreatePost
+        isCreatePostModalOpen={isFeedModalOpen}
+        handleClose={toggleFeedModal()}
+      />
       <Grid item xs={12} sm={6} md={6}>
         <Grid
           container
@@ -63,7 +75,7 @@ const Header = () => {
           >
             <SendIcon />
           </IconButton>
-          <MuiPrimaryButton sx={{ ml: 2 }}>
+          <MuiPrimaryButton sx={{ ml: 2 }} onClick={toggleFeedModal(true)}>
             <AddOutlinedIcon sx={{ mr: 1 }} />
             Add a post
           </MuiPrimaryButton>

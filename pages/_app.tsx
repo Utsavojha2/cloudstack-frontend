@@ -26,7 +26,7 @@ import 'translations/i18n';
 import { getToastErrorMessages } from 'utils';
 import PublicRouteWrapper from 'components/PublicRouteWrapper/PublicRouteWrapper';
 import ConfirmAccountWrapper from 'components/ConfirmAccountWrapper/ConfirmAccountWrapper';
-import ToastContextProvider from 'components/ToastProvider/ToastProvider';
+import ToastContextProvider from 'containers/Provider/ToastProvider/ToastProvider';
 
 const NoopLayout: React.FC = ({ children }) => children as React.ReactElement;
 
