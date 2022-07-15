@@ -5,6 +5,7 @@ import { Tab, Tabs } from '@mui/material';
 import TabPanel from 'components/Common/TabPanel/TabPanel';
 import { H1 } from 'components/Common/Typography/Typography';
 import SearchBar from 'components/Layout/SearchBar/SearchBar';
+import CropProvider from 'containers/Provider/CropProvider/CropProvider';
 
 interface IProfileLayoutProps {
   children: React.ReactNode;
@@ -19,7 +20,7 @@ const ProfileLayout: React.FC<IProfileLayoutProps> = ({ children }) => {
   };
 
   return (
-    <div>
+    <CropProvider>
       <StyledProfileHeader>
         <header onClick={() => router.push('/feed')}>
           <StyledBrandLogo src={'/logo.png'} alt="" />
@@ -39,7 +40,7 @@ const ProfileLayout: React.FC<IProfileLayoutProps> = ({ children }) => {
           </TabPanel>
         );
       })}
-    </div>
+    </CropProvider>
   );
 };
 

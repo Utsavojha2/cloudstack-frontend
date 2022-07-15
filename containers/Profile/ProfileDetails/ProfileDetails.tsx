@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState, useRef, DragEvent } from 'react';
+import isEqual from 'lodash/isEqual';
 import { useForm } from 'react-hook-form';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { H2, H3, P1 } from 'components/Common/Typography/Typography';
+import * as Button from 'components/Common/Buttons/Buttons';
+import SelectForm from 'components/Form/SelectForm/SelectForm';
+import AlertDialogSlide from 'components/Common/AlertDialog/AlertDialog';
+import { countries, getFlagUri } from 'utils/static';
 import {
   StyledDetailWrapper,
   StyledCoverImage,
@@ -20,13 +26,73 @@ import {
   StyledUploadWrapper,
   StyledMuiTextArea,
 } from 'containers/Profile/ProfileDetails/styles';
-import { H2, H3, P1 } from 'components/Common/Typography/Typography';
-import * as Button from 'components/Common/Buttons/Buttons';
-import SelectForm from 'components/Form/SelectForm/SelectForm';
-import { countries, getFlagUri } from 'utils/static';
+import useAppContext from 'config/app.context';
+import { isImageExtensionEligible } from 'utils';
+import { CropContext } from 'containers/Provider/CropProvider/CropProvider';
+import { ICropContext } from 'containers/Provider/CropProvider/types';
+import { ToastContext } from 'config/toast.context';
+
+type IModalType = 'profile-modal' | 'cover-modal' | 'form-exit-modal';
 
 const ProfileDetails = () => {
+  const dropzoneRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const methods = useForm();
+  const [, setImageSrc] = useState('');
+  const [currentOpenedModal, setCurrentOpenedModal] =
+    useState<IModalType | null>(null);
+
+  const { showMessage } = useAppContext(ToastContext);
+  const { resetInitialCrop } = useAppContext(CropContext) as ICropContext;
+
+  const readFileUri = (file: File) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () =>
+      setImageSrc(reader.result?.toString() || '')
+    );
+    reader.readAsDataURL(file);
+  };
+
+  const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      resetInitialCrop();
+      readFileUri(e.target.files[0]);
+    }
+  };
+
+  const onUploadClick = () => fileInputRef.current?.click();
+
+  const onDragInitial = (e: DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropzoneRef.current?.classList.add('highlight');
+  };
+
+  const onDragEnd = () => {
+    dropzoneRef.current?.classList.remove('highlight');
+  };
+
+  const onDropPicture = (e: DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropzoneRef.current?.classList.remove('highlight');
+    const files = e.dataTransfer.files;
+    const uploadedFile = e.dataTransfer.files[0];
+    const isValidImageExtension = isImageExtensionEligible(uploadedFile.name);
+    if (!files || !uploadedFile || files.length > 1) {
+      return showMessage('Error adding file', 'error');
+    }
+    if (!isValidImageExtension) {
+      return showMessage('Invalid image extension', 'error');
+    }
+    resetInitialCrop();
+    readFileUri(uploadedFile);
+  };
+
+  const onShowConfirmationModal = (type: IModalType) => () => {
+    setCurrentOpenedModal(type);
+  };
 
   return (
     <StyledDetailWrapper {...methods}>
@@ -48,7 +114,11 @@ const ProfileDetails = () => {
           </StyledNameWrapper>
         </StyledUserName>
         <StyledFormButtons>
-          <Button.MuiSecondaryButton>Cancel</Button.MuiSecondaryButton>
+          <Button.MuiSecondaryButton
+            onClick={onShowConfirmationModal('form-exit-modal')}
+          >
+            Exit
+          </Button.MuiSecondaryButton>
           <Button.MuiPrimaryButton>Save</Button.MuiPrimaryButton>
         </StyledFormButtons>
       </StyledFormHeader>
@@ -78,7 +148,14 @@ const ProfileDetails = () => {
               </Box>
             </Grid>
             <Grid item xs={10}>
-              <StyledPhotoDropzone>
+              <StyledPhotoDropzone
+                ref={dropzoneRef}
+                onClick={onUploadClick}
+                onDragEnter={onDragInitial}
+                onDragOver={onDragInitial}
+                onDragLeave={onDragEnd}
+                onDrop={onDropPicture}
+              >
                 <StyledUploadWrapper>
                   <CloudUploadIcon />
                   <P1>
@@ -87,6 +164,18 @@ const ProfileDetails = () => {
                     PNG, JPG, JPEG or GIF
                   </P1>
                 </StyledUploadWrapper>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple={false}
+                  hidden
+                  accept="image/x-png,image/gif,image/jpeg"
+                  onClick={(e) => {
+                    const element = e.target as HTMLInputElement;
+                    element.value = '';
+                  }}
+                  onChange={onSelectFile}
+                />
               </StyledPhotoDropzone>
             </Grid>
           </Grid>
@@ -135,6 +224,25 @@ const ProfileDetails = () => {
           </Grid>
         </StyledFormItemsWrapper>
       </StyledFormWrapper>
+      <AlertDialogSlide
+        isOpen={isEqual(currentOpenedModal, 'form-exit-modal')}
+        handleClose={() => setCurrentOpenedModal(null)}
+        title="Are you sure?"
+        contentMessage="You will lose all your current changes. That means all the form changes & uploaded pictures will be lost and will revert back to previous changes."
+        renderDialogActions={() => (
+          <Box sx={{ pb: 1 }}>
+            <Button.MuiSecondaryButton
+              onClick={() => setCurrentOpenedModal(null)}
+              sx={{ mr: 2 }}
+            >
+              Cancel
+            </Button.MuiSecondaryButton>
+            <Button.MuiPrimaryButton>
+              Exit without saving
+            </Button.MuiPrimaryButton>
+          </Box>
+        )}
+      />
     </StyledDetailWrapper>
   );
 };

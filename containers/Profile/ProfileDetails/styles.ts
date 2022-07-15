@@ -88,6 +88,9 @@ export const StyledFormWrapper = styled.div`
   display: grid;
   place-items: center;
   margin-bottom: 50px;
+  & .highlight {
+    border: 2px dotted rgba(0, 0, 0, 0.8);
+  }
 `;
 
 export const StyledFormItemsWrapper = styled.div`
