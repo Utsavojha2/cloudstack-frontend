@@ -11,13 +11,30 @@ import {
 } from 'components/Common/Buttons/Buttons';
 import { H2 } from 'components/Common/Typography/Typography';
 import { IPostLayoutProps } from 'types/feed';
+import { FieldValues, useFormContext } from 'react-hook-form';
 
 const PostLayout: React.FC<IPostLayoutProps> = ({
   handleClose,
   isEditMode = false,
-  onSaveAndExit,
-  onPublishPost,
 }) => {
+  const { handleSubmit } = useFormContext();
+
+  const onPublishPost = (formValues: FieldValues) => {
+    console.log(formValues);
+    if (isEditMode) {
+      // update post
+    }
+    // create post
+  };
+
+  const onSaveAndExit = (formValues: FieldValues) => {
+    if (isEditMode) {
+      // update draft post
+    }
+    // create a draft post
+    console.log(formValues);
+  };
+
   return (
     <StyledAppBar>
       <Toolbar>
@@ -36,10 +53,12 @@ const PostLayout: React.FC<IPostLayoutProps> = ({
             flexItem
             sx={{ m: '0 15px', borderColor: 'gray' }}
           />
-          <MuiSecondaryButton onClick={onSaveAndExit}>
-            {isEditMode ? 'Unpublish' : 'Save & Exit'}
+          <MuiSecondaryButton onClick={handleSubmit(onSaveAndExit)}>
+            Save & Exit
           </MuiSecondaryButton>
-          <MuiPrimaryButton onClick={onPublishPost}>Publish</MuiPrimaryButton>
+          <MuiPrimaryButton onClick={handleSubmit(onPublishPost)}>
+            Publish
+          </MuiPrimaryButton>
         </ActionButtons>
       </Toolbar>
     </StyledAppBar>

@@ -1,4 +1,5 @@
 import React from 'react';
+import isEqual from 'lodash/isEqual';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -21,20 +22,22 @@ export default function SelectForm<T extends { label: string }>({
   const { control } = useFormContext();
   return (
     <Controller
-      render={(props) => (
+      render={({ field }) => (
         <Autocomplete
-          {...props}
+          {...field}
           options={selectOptions}
           getOptionLabel={(option) => option.label}
           renderOption={renderOption}
           renderInput={(params) => (
             <TextField {...params} label={label} variant="outlined" />
           )}
-          onChange={(_, data) => props.field.onChange(data)}
+          onChange={(_, data) => field.onChange(data)}
+          isOptionEqualToValue={(option, value) => isEqual(option, value)}
         />
       )}
       name={name}
       control={control}
+      defaultValue={null}
     />
   );
 }

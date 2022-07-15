@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { axiosInstance } from 'config/axios.config';
 import { useMutation } from 'react-query';
 import {
   Box,
@@ -25,6 +24,7 @@ import { H1, H2, H3, P1, P2 } from 'components/Common/Typography/Typography';
 import { navigationItems } from 'components/Layout/Sidebar/helpers';
 import * as Styled from 'components/Layout/Sidebar/Sidebar.styles';
 import theme from 'theme/theme';
+import { axiosInstance } from 'config/axios.config';
 import { ToastContext } from 'config/toast.context';
 import useAppContext from 'config/app.context';
 import { FeedContext } from 'config/feed.context';
@@ -81,12 +81,7 @@ const Sidebar: React.FC = () => {
 
       <Grid container justifyContent="center" sx={{ mt: 5 }}>
         <Styled.UserLogoWrapper>
-          <img
-            src={
-              'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&w=1000&q=80'
-            }
-            alt=""
-          />
+          <img src={'/dp.jpeg'} alt="" />
         </Styled.UserLogoWrapper>
       </Grid>
 

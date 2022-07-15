@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import Box from '@mui/material/Box';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Sidebar from 'components/Layout/Sidebar/Sidebar';
 import Header from 'components/Layout/Header/Header';
-import styled from 'styled-components';
 import theme from 'theme/theme';
 import { FeedContext } from 'config/feed.context';
 

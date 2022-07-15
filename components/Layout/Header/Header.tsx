@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SendIcon from '@mui/icons-material/Send';
@@ -15,6 +11,7 @@ import theme from 'theme/theme';
 import CreatePost from 'containers/FeedPost/CreatePost/CreatePost';
 import useAppContext from 'config/app.context';
 import { FeedContext } from 'config/feed.context';
+import SearchBar from 'components/Layout/SearchBar/SearchBar';
 
 const Header = () => {
   const [isFeedModalOpen, setIsFeedModalOpen] = useState(false);
@@ -51,12 +48,7 @@ const Header = () => {
             <MenuIcon />
           </IconButton>
 
-          <HeaderInputItem>
-            <IconButton type="submit" sx={{ p: '10px' }}>
-              <SearchIcon />
-            </IconButton>
-            <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Search" />
-          </HeaderInputItem>
+          <SearchBar />
         </Grid>
       </Grid>
       <Grid item sm={6} md={6} sx={{ display: { xs: 'none', sm: 'block' } }}>
@@ -84,26 +76,5 @@ const Header = () => {
     </Grid>
   );
 };
-
-const HeaderInputItem = styled(Paper)`
-  ${({ theme }) => `
-    padding: 2px 4px;
-    display: flex;
-    align-items: center;
-    width: 400px;
-    border: 1px solid lightgray;
-    box-shadow: none;
-    border-radius: 10px;
-    ${theme.breakpoints.down('lg')} {
-      width: 300px;
-    }
-    ${theme.breakpoints.down('md')} {
-        width: 210px;
-    }
-    ${theme.breakpoints.down('sm')} {
-        width: 250px;
-    }
- `};
-`;
 
 export default Header;

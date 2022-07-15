@@ -3,7 +3,7 @@ import difference from 'lodash/difference';
 import Dialog from '@mui/material/Dialog';
 import PostLayout from 'layouts/PostLayout/PostLayout';
 import CloseIcon from '@mui/icons-material/Close';
-import FeedPost from 'containers/FeedPost';
+import FeedPost from 'containers/FeedPost/FeedPost';
 import MuiTransition from 'components/Common/MuiTransition/MuiTransition';
 import { isImageExtensionEligible } from 'utils';
 import {
@@ -14,6 +14,7 @@ import {
 import { ICreatePostProps, ISelectedImageProps } from 'types/feed';
 import useAppContext from 'config/app.context';
 import { ToastContext } from 'config/toast.context';
+import { FormProvider, useForm } from 'react-hook-form';
 
 const TOTAL_UPLOAD_LIMIT = 3;
 
@@ -22,7 +23,7 @@ const CreateFeed: React.FC<ICreatePostProps> = ({
   handleClose,
 }) => {
   const { showMessage } = useAppContext(ToastContext);
-  const [textareaValue, setTextareaValue] = useState('');
+  const methods = useForm();
   const [isEmojiDropdownOpen, setIsEmojiDropdownOpen] = useState(false);
   const [selectedImageFiles, setSelectedImageFiles] = useState<
     Array<ISelectedImageProps>
@@ -33,10 +34,6 @@ const CreateFeed: React.FC<ICreatePostProps> = ({
       selectedImageFiles.forEach((file) => URL.revokeObjectURL(file.preview));
     };
   }, []);
-
-  const onSaveAndExitPost = () => null;
-
-  const onSavePost = () => null;
 
   const onDialogBodyClick = () => {
     if (!isEmojiDropdownOpen) return;
@@ -102,28 +99,24 @@ const CreateFeed: React.FC<ICreatePostProps> = ({
       TransitionComponent={MuiTransition}
       onClick={onDialogBodyClick}
     >
-      <PostLayout
-        handleClose={handleClose}
-        onSaveAndExit={onSaveAndExitPost}
-        onPublishPost={onSavePost}
-      />
-      <FeedPost
-        onFileChange={onPostFileChanges}
-        isOpen={isEmojiDropdownOpen}
-        closeEmojiPicker={onCloseEmojiPicker}
-        textareaValue={textareaValue}
-        setValue={setTextareaValue}
-      />
-      <StyledImageList cols={3} rowHeight={300}>
-        {selectedImageFiles.map(({ preview }) => (
-          <StyledImageListItem key={preview}>
-            <CloseIconContainer onClick={onRemoveFile(preview)}>
-              <CloseIcon />
-            </CloseIconContainer>
-            <img src={preview} alt={preview} />
-          </StyledImageListItem>
-        ))}
-      </StyledImageList>
+      <FormProvider {...methods}>
+        <PostLayout handleClose={handleClose} />
+        <FeedPost
+          onFileChange={onPostFileChanges}
+          isOpen={isEmojiDropdownOpen}
+          closeEmojiPicker={onCloseEmojiPicker}
+        />
+        <StyledImageList cols={3} rowHeight={300}>
+          {selectedImageFiles.map(({ preview }) => (
+            <StyledImageListItem key={preview}>
+              <CloseIconContainer onClick={onRemoveFile(preview)}>
+                <CloseIcon />
+              </CloseIconContainer>
+              <img src={preview} alt={preview} />
+            </StyledImageListItem>
+          ))}
+        </StyledImageList>
+      </FormProvider>
     </Dialog>
   );
 };

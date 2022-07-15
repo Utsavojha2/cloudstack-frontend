@@ -10,6 +10,16 @@ export const StyledDiaglogSection = styled.section`
   place-items: center;
 `;
 
+export const StyledPostHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const StyledPostVisibility = styled.div`
+  padding-right: 25px;
+`;
+
 export const StyledDiaglogBody = styled.div`
   position: relative;
   width: 600px;
@@ -23,6 +33,7 @@ export const StyledDiaglogBody = styled.div`
 `;
 
 export const StyledDialogActionButtons = styled.div`
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: flex-start;
