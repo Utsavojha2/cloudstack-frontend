@@ -43,7 +43,7 @@ export default function AlertDialogSlide({
       TransitionComponent={MuiTransition}
       keepMounted
       onClose={handleClose}
-      aria-describedby="alert-dialog-slide-description"
+      aria-describedby="alert-dialog-confirmation"
     >
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
@@ -52,7 +52,7 @@ export default function AlertDialogSlide({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Box sx={{ pb: 1, pr: 5 }}>
+        <Box sx={{ pb: 1, pr: 4 }}>
           <Button.MuiSecondaryButton
             onClick={onCancel || handleClose}
             sx={{ mr: 2 }}

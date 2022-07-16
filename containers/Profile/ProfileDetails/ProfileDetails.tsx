@@ -1,14 +1,21 @@
-import React, { useState, useRef, DragEvent } from 'react';
+import React, { useState, useRef, DragEvent, useEffect } from 'react';
 import isEqual from 'lodash/isEqual';
-import { useForm } from 'react-hook-form';
+import isNil from 'lodash/isNil';
+import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { H2, H3, P1 } from 'components/Common/Typography/Typography';
 import * as Button from 'components/Common/Buttons/Buttons';
 import SelectForm from 'components/Form/SelectForm/SelectForm';
-import AlertDialogSlide from 'components/Common/AlertDialog/AlertDialog';
+import ConfirmationModal from 'components/Common/ConfirmationModal/ConfirmationModal';
+import CustomModal from 'components/Common/CustomModal/CustomModal';
+import InputForm from 'components/Form/InputForm/InputForm';
+import DatePicker from 'components/Form/DatePicker/DatePicker';
 import { countries, getFlagUri } from 'utils/static';
 import useAppContext from 'config/app.context';
 import { isImageExtensionEligible } from 'utils';
@@ -26,19 +33,26 @@ import {
   StyledFormWrapper,
   StyledFormItemsWrapper,
   StyledDivider,
-  StyledInputForm,
   StyledPhotoDropzone,
   StyledUploadWrapper,
   StyledMuiTextArea,
 } from 'containers/Profile/ProfileDetails/styles';
-
-type IModalType = 'profile-modal' | 'cover-modal' | 'form-exit-modal';
+import PictureResize from '../PictureResize/PictureResize';
+import { IModalType, IDateType } from './types';
 
 const ProfileDetails = () => {
   const dropzoneRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const methods = useForm();
+  const { fields, remove, append } = useFieldArray({
+    control: methods.control,
+    name: 'employment-history',
+  });
+
+  const [currentWorkingIndex, setCurrentWorkingIndex] = useState<number | null>(
+    null
+  );
   const [, setImageSrc] = useState('');
   const [currentOpenedModal, setCurrentOpenedModal] =
     useState<IModalType | null>(null);
@@ -46,11 +60,31 @@ const ProfileDetails = () => {
   const { showMessage } = useAppContext(ToastContext);
   const { resetInitialCrop } = useAppContext(CropContext) as ICropContext;
 
+  useEffect(() => {
+    const subscription = methods.watch((data) => {
+      setCurrentWorkingIndex(null);
+      const jobHistory = data['employment-history'];
+      const index = jobHistory.findIndex(
+        (job: { isCurrentlyWorkingHere: boolean }) =>
+          !!job.isCurrentlyWorkingHere
+      );
+      if (index !== -1) {
+        setCurrentWorkingIndex(index);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [methods.watch]);
+
   const readFileUri = (file: File) => {
     const reader = new FileReader();
-    reader.addEventListener('load', () =>
-      setImageSrc(reader.result?.toString() || '')
-    );
+    reader.addEventListener('load', () => {
+      const src = reader.result?.toString();
+      if (src) {
+        setImageSrc(src);
+        setCurrentOpenedModal(IModalType.PROFILE_RESIZE_MODAL);
+      }
+    });
     reader.readAsDataURL(file);
   };
 
@@ -96,8 +130,39 @@ const ProfileDetails = () => {
 
   const onExitDetailPage = () => null;
 
+  const onAddEmploymentField = () => {
+    append({ name: 'employment-history' });
+  };
+
+  const handleClose =
+    (i: number, type: IDateType = IDateType.END_DATE) =>
+    () => {
+      methods.resetField(`employment-history.${i}.${type}`);
+    };
+
+  const isDisabled = (idx: number, equalityComparison: boolean) => {
+    const isIndexEqual = idx === currentWorkingIndex;
+    return !isNil(currentWorkingIndex) && isIndexEqual === equalityComparison;
+  };
+
   return (
     <StyledDetailWrapper {...methods}>
+      <ConfirmationModal
+        isOpen={isEqual(currentOpenedModal, 'form-exit-modal')}
+        handleClose={() => setCurrentOpenedModal(null)}
+        title="Are you sure?"
+        contentMessage="You will lose all your current changes. That means all the form changes & uploaded pictures will be lost and will revert back to previous changes."
+        confirmText="Exit without saving"
+        onConfirm={onExitDetailPage}
+      />
+      <CustomModal
+        open={isEqual(currentOpenedModal, 'profile-modal')}
+        onClose={() => setCurrentOpenedModal(null)}
+      >
+        asd
+      </CustomModal>
+      <PictureResize />
+
       <StyledCoverImage>
         <img src="/cover.jpg" alt="" />
         <button>
@@ -117,7 +182,7 @@ const ProfileDetails = () => {
         </StyledUserName>
         <StyledFormButtons>
           <Button.MuiSecondaryButton
-            onClick={onShowConfirmationModal('form-exit-modal')}
+            onClick={onShowConfirmationModal(IModalType.FORM_EXIT_MODAL)}
           >
             Exit
           </Button.MuiSecondaryButton>
@@ -128,16 +193,16 @@ const ProfileDetails = () => {
         <StyledFormItemsWrapper>
           <Grid container spacing={3}>
             <Grid item xs={6}>
-              <StyledInputForm name="firstName" label="First Name" />
+              <InputForm name="firstName" label="First Name" />
             </Grid>
             <Grid item xs={6}>
-              <StyledInputForm name="lastName" label="Last Name" />
+              <InputForm name="lastName" label="Last Name" />
             </Grid>
           </Grid>
           <StyledDivider />
           <Grid container>
             <Grid item xs={9}>
-              <StyledInputForm name="emailAddress" label="Email Address" />
+              <InputForm name="emailAddress" label="Email Address" />
             </Grid>
           </Grid>
           <StyledDivider />
@@ -184,7 +249,7 @@ const ProfileDetails = () => {
           <StyledDivider />
           <Grid container>
             <Grid item xs={9}>
-              <StyledInputForm name="role" label="Role" />
+              <InputForm name="role" label="Role" />
             </Grid>
           </Grid>
           <StyledDivider />
@@ -224,16 +289,79 @@ const ProfileDetails = () => {
               />
             </Grid>
           </Grid>
+          <StyledDivider />
+          {fields.map((item, index) => {
+            return (
+              <Grid key={item.id} container spacing={3}>
+                <Grid item xs={6}>
+                  <InputForm
+                    name={`employment-history.${index}.jobTitle`}
+                    label="Job Title"
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <InputForm
+                    name={`employment-history.${index}.company`}
+                    label="Company"
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <DatePicker
+                    label="Start Date"
+                    name={`employment-history.${index}.startDate`}
+                    disableFuture
+                    onYearChange={handleClose(index, IDateType.START_DATE)}
+                    onMonthChange={handleClose(index, IDateType.START_DATE)}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <DatePicker
+                    label="End Date"
+                    name={`employment-history.${index}.endDate`}
+                    disableFuture
+                    onYearChange={handleClose(index)}
+                    onMonthChange={handleClose(index)}
+                    disabled={isDisabled(index, true)}
+                    className={
+                      isDisabled(index, true) ? 'disabled-date-picker' : ''
+                    }
+                  />
+                </Grid>
+                {!isDisabled(index, false) && (
+                  <Grid item xs={12} sx={{ pt: '10px !important' }}>
+                    <Controller
+                      render={({ field }) => (
+                        <FormControlLabel
+                          label="I currently work here"
+                          control={<Checkbox color="default" />}
+                          {...field}
+                        />
+                      )}
+                      control={methods.control}
+                      name={`employment-history.${index}.isCurrentlyWorkingHere`}
+                    />
+                  </Grid>
+                )}
+                <Grid item xs={10}>
+                  <Button.MuiSecondaryButton onClick={() => remove(index)}>
+                    Remove
+                  </Button.MuiSecondaryButton>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <StyledDivider isFieldDivider />
+                </Grid>
+              </Grid>
+            );
+          })}
+          <Button.MuiPrimaryButton
+            onClick={onAddEmploymentField}
+            disabled={fields.length > 5}
+          >
+            <AddCircleOutlineIcon sx={{ mr: 1 }} /> Add Employment History
+          </Button.MuiPrimaryButton>
         </StyledFormItemsWrapper>
       </StyledFormWrapper>
-      <AlertDialogSlide
-        isOpen={isEqual(currentOpenedModal, 'form-exit-modal')}
-        handleClose={() => setCurrentOpenedModal(null)}
-        title="Are you sure?"
-        contentMessage="You will lose all your current changes. That means all the form changes & uploaded pictures will be lost and will revert back to previous changes."
-        confirmText="Exit without saving"
-        onConfirm={() => onExitDetailPage}
-      />
     </StyledDetailWrapper>
   );
 };

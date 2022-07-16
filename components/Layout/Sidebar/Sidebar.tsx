@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import CopyrightIcon from '@mui/icons-material/Copyright';
 import { CloseOutlined } from '@mui/icons-material';
-import AlertDialogSlide from 'components/Common/AlertDialog/AlertDialog';
+import ConfirmationModal from 'components/Common/ConfirmationModal/ConfirmationModal';
 import { H1, H2, H3, P1, P2 } from 'components/Common/Typography/Typography';
 import { navigationItems } from 'components/Layout/Sidebar/helpers';
 import * as Styled from 'components/Layout/Sidebar/Sidebar.styles';
@@ -145,7 +145,7 @@ const Sidebar: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <AlertDialogSlide
+      <ConfirmationModal
         isOpen={isModalOpen}
         handleClose={() => setIsModalOpen(false)}
         title="Are you sure you want to logout?"
