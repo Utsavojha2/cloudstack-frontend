@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import {
-  Box,
   Divider,
   Grid,
   IconButton,
@@ -15,10 +14,6 @@ import {
 } from '@mui/material';
 import CopyrightIcon from '@mui/icons-material/Copyright';
 import { CloseOutlined } from '@mui/icons-material';
-import {
-  MuiPrimaryButton,
-  MuiSecondaryButton,
-} from 'components/Common/Buttons/Buttons';
 import AlertDialogSlide from 'components/Common/AlertDialog/AlertDialog';
 import { H1, H2, H3, P1, P2 } from 'components/Common/Typography/Typography';
 import { navigationItems } from 'components/Layout/Sidebar/helpers';
@@ -155,19 +150,8 @@ const Sidebar: React.FC = () => {
         handleClose={() => setIsModalOpen(false)}
         title="Are you sure you want to logout?"
         contentMessage="You will be logged out of the application and insert in your credentials again if you want to log in."
-        renderDialogActions={() => (
-          <Box sx={{ pb: 1 }}>
-            <MuiSecondaryButton
-              onClick={() => setIsModalOpen(false)}
-              sx={{ mr: 2 }}
-            >
-              Cancel
-            </MuiSecondaryButton>
-            <MuiPrimaryButton onClick={() => mutate()} sx={{ mr: 3 }}>
-              Logout
-            </MuiPrimaryButton>
-          </Box>
-        )}
+        confirmText="Logout"
+        onConfirm={() => mutate()}
       />
     </Styled.MuiSidebar>
   );

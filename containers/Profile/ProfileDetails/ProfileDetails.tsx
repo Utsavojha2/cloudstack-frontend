@@ -10,6 +10,11 @@ import * as Button from 'components/Common/Buttons/Buttons';
 import SelectForm from 'components/Form/SelectForm/SelectForm';
 import AlertDialogSlide from 'components/Common/AlertDialog/AlertDialog';
 import { countries, getFlagUri } from 'utils/static';
+import useAppContext from 'config/app.context';
+import { isImageExtensionEligible } from 'utils';
+import { CropContext } from 'containers/Provider/CropProvider/CropProvider';
+import { ICropContext } from 'containers/Provider/CropProvider/types';
+import { ToastContext } from 'config/toast.context';
 import {
   StyledDetailWrapper,
   StyledCoverImage,
@@ -26,11 +31,6 @@ import {
   StyledUploadWrapper,
   StyledMuiTextArea,
 } from 'containers/Profile/ProfileDetails/styles';
-import useAppContext from 'config/app.context';
-import { isImageExtensionEligible } from 'utils';
-import { CropContext } from 'containers/Provider/CropProvider/CropProvider';
-import { ICropContext } from 'containers/Provider/CropProvider/types';
-import { ToastContext } from 'config/toast.context';
 
 type IModalType = 'profile-modal' | 'cover-modal' | 'form-exit-modal';
 
@@ -93,6 +93,8 @@ const ProfileDetails = () => {
   const onShowConfirmationModal = (type: IModalType) => () => {
     setCurrentOpenedModal(type);
   };
+
+  const onExitDetailPage = () => null;
 
   return (
     <StyledDetailWrapper {...methods}>
@@ -229,19 +231,8 @@ const ProfileDetails = () => {
         handleClose={() => setCurrentOpenedModal(null)}
         title="Are you sure?"
         contentMessage="You will lose all your current changes. That means all the form changes & uploaded pictures will be lost and will revert back to previous changes."
-        renderDialogActions={() => (
-          <Box sx={{ pb: 1 }}>
-            <Button.MuiSecondaryButton
-              onClick={() => setCurrentOpenedModal(null)}
-              sx={{ mr: 2 }}
-            >
-              Cancel
-            </Button.MuiSecondaryButton>
-            <Button.MuiPrimaryButton>
-              Exit without saving
-            </Button.MuiPrimaryButton>
-          </Box>
-        )}
+        confirmText="Exit without saving"
+        onConfirm={() => onExitDetailPage}
       />
     </StyledDetailWrapper>
   );
