@@ -39,7 +39,7 @@ const CropProvider: React.FC<ICropProviderProps> = ({ children }) => {
   const value = {
     initialCrop: state.initialCrop,
     completeCrop: state.completeCrop,
-    setInitialCrop: (crop: Crop) => () => {
+    setInitialCrop: (crop: Crop) => {
       dispatch({ type: ICropAction.SET_INTIAL_CROP, payload: crop });
     },
     resetInitialCrop: () => {
@@ -47,7 +47,7 @@ const CropProvider: React.FC<ICropProviderProps> = ({ children }) => {
         type: ICropAction.RESET_INTIAL_CROP,
       });
     },
-    setCompleteCrop: (crop: PixelCrop) => () => {
+    setCompleteCrop: (crop: PixelCrop) => {
       dispatch({ type: ICropAction.SET_COMPLETE_CROP, payload: crop });
     },
     resetCompleteCrop: () => {

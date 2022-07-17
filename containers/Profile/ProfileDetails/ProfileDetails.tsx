@@ -53,7 +53,7 @@ const ProfileDetails = () => {
   const [currentWorkingIndex, setCurrentWorkingIndex] = useState<number | null>(
     null
   );
-  const [, setImageSrc] = useState('');
+  const [imageSrc, setImageSrc] = useState('');
   const [currentOpenedModal, setCurrentOpenedModal] =
     useState<IModalType | null>(null);
 
@@ -90,6 +90,7 @@ const ProfileDetails = () => {
 
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
+      methods.resetField('imageScale');
       resetInitialCrop();
       readFileUri(e.target.files[0]);
     }
@@ -113,7 +114,7 @@ const ProfileDetails = () => {
     dropzoneRef.current?.classList.remove('highlight');
     const files = e.dataTransfer.files;
     const uploadedFile = e.dataTransfer.files[0];
-    const isValidImageExtension = isImageExtensionEligible(uploadedFile.name);
+    const isValidImageExtension = isImageExtensionEligible(uploadedFile?.name);
     if (!files || !uploadedFile || files.length > 1) {
       return showMessage('Error adding file', 'error');
     }
@@ -145,24 +146,33 @@ const ProfileDetails = () => {
     return !isNil(currentWorkingIndex) && isIndexEqual === equalityComparison;
   };
 
+  const onModalClose = () => {
+    setCurrentOpenedModal(null);
+  };
+
   return (
     <StyledDetailWrapper {...methods}>
       <ConfirmationModal
-        isOpen={isEqual(currentOpenedModal, 'form-exit-modal')}
-        handleClose={() => setCurrentOpenedModal(null)}
+        isOpen={isEqual(currentOpenedModal, IModalType.FORM_EXIT_MODAL)}
+        handleClose={onModalClose}
         title="Are you sure?"
         contentMessage="You will lose all your current changes. That means all the form changes & uploaded pictures will be lost and will revert back to previous changes."
         confirmText="Exit without saving"
         onConfirm={onExitDetailPage}
       />
       <CustomModal
-        open={isEqual(currentOpenedModal, 'profile-modal')}
-        onClose={() => setCurrentOpenedModal(null)}
+        open={isEqual(currentOpenedModal, IModalType.PROFILE_RESIZE_MODAL)}
+        onClose={onModalClose}
       >
-        asd
+        <PictureResize
+          imageSrc={imageSrc}
+          circularCrop
+          keepSelection
+          minWidth={200}
+          minHeight={200}
+          locked
+        />
       </CustomModal>
-      <PictureResize />
-
       <StyledCoverImage>
         <img src="/cover.jpg" alt="" />
         <button>
@@ -186,7 +196,7 @@ const ProfileDetails = () => {
           >
             Exit
           </Button.MuiSecondaryButton>
-          <Button.MuiPrimaryButton>Save</Button.MuiPrimaryButton>
+          <Button.MuiPrimaryButton>Save Changes</Button.MuiPrimaryButton>
         </StyledFormButtons>
       </StyledFormHeader>
       <StyledFormWrapper>

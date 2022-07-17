@@ -23,8 +23,8 @@ export interface ICropState {
 }
 
 export interface ICropContext extends ICropState {
-  readonly setInitialCrop: (crop: Crop) => () => void;
-  readonly setCompleteCrop: (crop: PixelCrop) => () => void;
+  readonly setInitialCrop: (crop: Crop) => void;
+  readonly setCompleteCrop: (crop: PixelCrop) => void;
   readonly resetInitialCrop: () => void;
   readonly resetCompleteCrop: () => void;
 }
