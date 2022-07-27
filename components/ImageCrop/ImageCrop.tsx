@@ -22,11 +22,11 @@ const ImageCrop: React.FC<IImageCropProps> = ({
   const [isImagePortrait, setIsImagePortrait] = useState(false);
 
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
-    if (aspect) {
-      const { width, height } = e.currentTarget;
-      setInitialCrop(centerAspectCrop(width, height, aspect));
-      setIsImagePortrait(width <= height);
-    }
+    if (!aspect) return;
+    const { width, height } = e.currentTarget;
+    console.log(aspect);
+    setInitialCrop(centerAspectCrop(width, height, aspect));
+    if (aspect === 1) setIsImagePortrait(width <= height);
   }
 
   return (

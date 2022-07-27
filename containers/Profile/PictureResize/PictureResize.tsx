@@ -15,7 +15,6 @@ interface IPictureResizeProps extends Partial<ReactCropProps> {
 
 const PictureResize: React.FC<IPictureResizeProps> = ({
   imageSrc,
-  aspect = 1,
   ...props
 }) => {
   const { control, watch } = useFormContext();
@@ -27,12 +26,7 @@ const PictureResize: React.FC<IPictureResizeProps> = ({
         <H3>Image Crop</H3>
       </StyledResizeHeader>
       <StyledResizeWrapper>
-        <ImageCrop
-          {...props}
-          imageSrc={imageSrc}
-          scale={scaleValue}
-          aspect={aspect}
-        />
+        <ImageCrop {...props} imageSrc={imageSrc} scale={scaleValue} />
       </StyledResizeWrapper>
       <StyledImageScaler>
         <InsertPhotoIcon />

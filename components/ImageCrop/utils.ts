@@ -9,7 +9,7 @@ export function centerAspectCrop(
     makeAspectCrop(
       {
         unit: '%',
-        width: 90,
+        width: aspect === 1 ? 90 : 100,
       },
       aspect,
       mediaWidth,

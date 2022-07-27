@@ -43,6 +43,7 @@ import { IModalType, IDateType } from './types';
 const ProfileDetails = () => {
   const dropzoneRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const coverInputRef = useRef<HTMLInputElement>(null);
 
   const methods = useForm();
   const { fields, remove, append } = useFieldArray({
@@ -58,7 +59,11 @@ const ProfileDetails = () => {
     useState<IModalType | null>(null);
 
   const { showMessage } = useAppContext(ToastContext);
-  const { resetInitialCrop } = useAppContext(CropContext) as ICropContext;
+  const { resetInitialCrop, completeCrop } = useAppContext(
+    CropContext
+  ) as ICropContext;
+
+  console.log(completeCrop);
 
   useEffect(() => {
     const subscription = methods.watch((data) => {
@@ -76,25 +81,30 @@ const ProfileDetails = () => {
     return () => subscription.unsubscribe();
   }, [methods.watch]);
 
-  const readFileUri = (file: File) => {
+  const readFileUri = (
+    file: File,
+    modalType: IModalType = IModalType.PROFILE_RESIZE_MODAL
+  ) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
       const src = reader.result?.toString();
       if (src) {
         setImageSrc(src);
-        setCurrentOpenedModal(IModalType.PROFILE_RESIZE_MODAL);
+        setCurrentOpenedModal(modalType);
       }
     });
     reader.readAsDataURL(file);
   };
 
-  const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      methods.resetField('imageScale');
-      resetInitialCrop();
-      readFileUri(e.target.files[0]);
-    }
-  };
+  const onSelectFile =
+    (type: IModalType = IModalType.PROFILE_RESIZE_MODAL) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files.length > 0) {
+        methods.resetField('imageScale');
+        resetInitialCrop();
+        readFileUri(e.target.files[0], type);
+      }
+    };
 
   const onUploadClick = () => fileInputRef.current?.click();
 
@@ -170,15 +180,39 @@ const ProfileDetails = () => {
           keepSelection
           minWidth={200}
           minHeight={200}
+          aspect={1}
           locked
         />
       </CustomModal>
+      <CustomModal
+        open={isEqual(currentOpenedModal, IModalType.COVER_RESIZE_MODAL)}
+        onClose={onModalClose}
+      >
+        <PictureResize
+          imageSrc={imageSrc}
+          // keepSelection
+          locked
+          aspect={16 / 9}
+        />
+      </CustomModal>
       <StyledCoverImage>
-        <img src="/cover.jpg" alt="" />
-        <button>
+        <img src="/logo.png" alt="" />
+        <button onClick={() => coverInputRef.current?.click()}>
           <DriveFolderUploadIcon />
           Upload
         </button>
+        <input
+          ref={coverInputRef}
+          type="file"
+          multiple={false}
+          hidden
+          accept="image/x-png,image/gif,image/jpeg"
+          onClick={(e) => {
+            const element = e.target as HTMLInputElement;
+            element.value = '';
+          }}
+          onChange={onSelectFile(IModalType.COVER_RESIZE_MODAL)}
+        />
       </StyledCoverImage>
       <StyledFormHeader>
         <StyledUserName>
@@ -251,7 +285,7 @@ const ProfileDetails = () => {
                     const element = e.target as HTMLInputElement;
                     element.value = '';
                   }}
-                  onChange={onSelectFile}
+                  onChange={onSelectFile(IModalType.PROFILE_RESIZE_MODAL)}
                 />
               </StyledPhotoDropzone>
             </Grid>
