@@ -8,18 +8,22 @@ export const navigationItems = [
   {
     name: 'Feed',
     icon: FeedIcon,
+    href: '/feed',
   },
   {
     name: 'Explore',
     icon: SearchIcon,
+    href: '/explore',
   },
   {
     name: 'Profile',
     icon: AccountCircleIcon,
+    href: '/profile',
   },
   {
     name: 'Settings',
     icon: SettingsIcon,
+    href: '/settings',
   },
   {
     name: 'Log Out',

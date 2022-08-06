@@ -1,5 +1,6 @@
-import { H2 } from 'components/Common/Typography/Typography';
 import styled from 'styled-components';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+import { H2 } from 'components/Common/Typography/Typography';
 
 interface IStyledPostItemProps {
   isFirstElement: boolean;
@@ -248,17 +249,29 @@ export const StyledUserPosts = styled.div`
 `;
 
 export const StyledPostItem = styled.div<IStyledPostItemProps>`
-  padding: 12px 15px;
-  width: 500px;
+  padding: 12px 0px;
+  width: 700px;
   background-color: ${({ theme }) => theme.palette.grey[100]};
   margin-top: ${({ isFirstElement }) => (isFirstElement ? '30px' : '15px')};
   margin-bottom: 15px;
+  border-radius: 14px;
+
+  & > div:nth-child(2) {
+    background-color: #000;
+  }
+
+  & .default-nav {
+    padding: 10px !important;
+    background-color: #fff;
+    margin: 0 5px;
+  }
 `;
 
 export const StyledPostHeader = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  padding: 5px 15px 10px;
 `;
 
 export const StyledPostUserInfo = styled.div`
@@ -288,5 +301,66 @@ export const StyledPostUserInfo = styled.div`
     flex-direction: column;
     align-items: flex-start;
     row-gap: 6px;
+  }
+`;
+
+export const StyledPostBody = styled.div``;
+
+export const StyledPostFooter = styled.div``;
+
+export const StyledPostAction = styled.div`
+  padding: 10px 0 10px 5px;
+  margin: 20px 16px 0;
+  display: flex;
+  align-items: center;
+  column-gap: 6px;
+  border: ${({ theme }) => `1px solid ${theme.palette.grey[200]}`};
+  border-radius: 12px;
+`;
+
+export const StyledPostCommentInput = styled.div`
+  padding: 17px 0 10px;
+  margin: 0 15px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: stretch;
+  column-gap: 12px;
+
+  & > div:first-child {
+    border: 1px solid;
+    border-color: ${({ theme }) => theme.palette.action.active};
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: ${({ theme }) => theme.palette.grey[100]};
+
+    & img {
+      height: 40px;
+      width: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+
+  & > div:nth-child(2) {
+    flex-grow: 1;
+  }
+`;
+
+export const StyledMuiTextArea = styled(TextareaAutosize)`
+  padding: 15px;
+  min-width: 100%;
+  max-width: 100%;
+  height: 100%;
+  border-color: lightgray;
+  font-family: inherit;
+  background-color: ${({ theme }) => theme.palette.grey[50]};
+  resize: none;
+  font-size: 16px;
+  border-radius: 6px;
+  &:focus {
+    outline: none;
   }
 `;

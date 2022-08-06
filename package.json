@@ -34,6 +34,7 @@
     "react-photo-album": "^1.14.0",
     "react-query": "^3.34.16",
     "react-query-devtools": "^2.6.3",
+    "react-slideshow-image": "^4.0.4",
     "styled-components": "^5.3.3",
     "yup": "^0.32.11"
   },

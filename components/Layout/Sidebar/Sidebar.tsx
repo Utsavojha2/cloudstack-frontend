@@ -23,6 +23,7 @@ import { axiosInstance } from 'config/axios.config';
 import { ToastContext } from 'config/toast.context';
 import useAppContext from 'config/app.context';
 import { FeedContext } from 'config/feed.context';
+import Link from 'next/link';
 
 const Sidebar: React.FC = () => {
   const router = useRouter();
@@ -118,19 +119,22 @@ const Sidebar: React.FC = () => {
       <Toolbar />
       <Divider />
       <List>
-        {navigationItems.map(({ name, icon: ItemIcon, isAsyncAction }) => (
-          <ListItem
-            button
-            key={name}
-            sx={{ px: 5 }}
-            onClick={() => setIsModalOpen(!!isAsyncAction)}
-          >
-            <ListItemIcon sx={{ minWidth: '40px' }}>
-              <ItemIcon />
-            </ListItemIcon>
-            <ListItemText primary={name} />
-          </ListItem>
-        ))}
+        {navigationItems.map(
+          ({ name, icon: ItemIcon, isAsyncAction, href }) => (
+            <Link href={href ?? router.asPath} key={name} passHref>
+              <ListItem
+                button
+                sx={{ px: 5 }}
+                onClick={() => setIsModalOpen(!!isAsyncAction)}
+              >
+                <ListItemIcon sx={{ minWidth: '40px' }}>
+                  <ItemIcon />
+                </ListItemIcon>
+                <ListItemText primary={name} />
+              </ListItem>
+            </Link>
+          )
+        )}
       </List>
       <Divider />
       <Grid container justifyContent="cente" sx={{ mt: 'auto', mb: 2 }}>

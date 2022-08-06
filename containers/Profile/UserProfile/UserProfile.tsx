@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+// import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+// import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+// import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+// import MessageIcon from '@mui/icons-material/Message';
+// import ScreenShareIcon from '@mui/icons-material/ScreenShare';
+import MenuItem from '@mui/material/MenuItem';
+// import IconButton from '@mui/material/IconButton';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
+import UnpublishedIcon from '@mui/icons-material/Unpublished';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+// import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EmailIcon from '@mui/icons-material/Email';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarMonthIcon from '@mui/icons-material/CalendarViewMonth';
@@ -11,6 +22,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import * as Button from 'components/Common/Buttons/Buttons';
 import TabPanel from 'components/Common/TabPanel/TabPanel';
 import { H2, H3, P1 } from 'components/Common/Typography/Typography';
+import MuiMenu from './Menu';
 import {
   StyledProfileWrapper,
   StyledProfileContainer,
@@ -29,23 +41,122 @@ import {
   StyledEmploymentTitle,
   StyledProfileTabs,
   StyledUserPosts,
-  StyledPostItem,
-  StyledPostHeader,
-  StyledPostUserInfo,
+  // StyledPostItem,
+  // StyledPostHeader,
+  // StyledPostUserInfo,
+  // StyledPostFooter,
+  // StyledPostAction,
+  // StyledPostCommentInput,
+  // StyledMuiTextArea,
 } from 'containers/Profile/UserProfile/UserProfile.styles';
 import { employmentData, profileTabs, postData } from './data';
+// import dynamic from 'next/dynamic';
+import 'react-slideshow-image/dist/styles.css';
+
+// const Slider = dynamic(() => import('./Slider'), {
+//   ssr: false,
+// });
 
 const UserProfile = () => {
   const [value, setValue] = useState(0);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  // const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  console.log(postData);
+  // const renderPostItem = (post, i) => {
+  //   return (
+  //     <StyledPostItem key={post.id} isFirstElement={i === 0}>
+  //       <StyledPostHeader>
+  //         <StyledDivItem>
+  //           <StyledPostUserInfo>
+  //             <StyledDivItem>
+  //               <img src={post.postedBy.avatar} alt="" />
+  //             </StyledDivItem>
+  //             <StyledDivItem>
+  //               <H3>{post.postedBy.name}</H3>
+  //               <P1>
+  //                 {post.postedBy.emailAddress} -{' '}
+  //                 {new Date(post.postedAt).getFullYear()}
+  //               </P1>
+  //             </StyledDivItem>
+  //           </StyledPostUserInfo>
+  //         </StyledDivItem>
+  //         <StyledDivItem>
+  //           <IconButton aria-label="delete" onClick={handleClick}>
+  //             <MoreVertIcon />
+  //           </IconButton>
+  //         </StyledDivItem>
+  //       </StyledPostHeader>
+  //       <Slider />
+  //       <StyledPostFooter>
+  //         <StyledPostAction>
+  //           <StyledDivItem>
+  //             <IconButton>
+  //               <FavoriteBorderIcon />
+  //             </IconButton>
+  //             <span>{post.likes}</span>
+  //           </StyledDivItem>
+  //           <IconButton>
+  //             <MessageIcon />
+  //           </IconButton>
+  //           <IconButton>
+  //             <ScreenShareIcon />
+  //           </IconButton>
+  //         </StyledPostAction>
+  //         <StyledPostCommentInput>
+  //           <StyledDivItem>
+  //             <img src={post.postedBy.avatar} alt="" />
+  //           </StyledDivItem>
+  //           <StyledDivItem>
+  //             <StyledMuiTextArea
+  //               minRows={1}
+  //               maxRows={6}
+  //               placeholder="Drop a comment..."
+  //             />
+  //           </StyledDivItem>
+  //           <StyledDivItem>
+  //             <IconButton>
+  //               <InsertPhotoIcon />
+  //             </IconButton>
+  //             <IconButton>
+  //               <EmojiEmotionsIcon />
+  //             </IconButton>
+  //           </StyledDivItem>
+  //         </StyledPostCommentInput>
+  //       </StyledPostFooter>
+  //     </StyledPostItem>
+  //   );
+  // };
 
   return (
     <StyledProfileWrapper>
+      <MuiMenu anchorEl={anchorEl} onClose={handleClose}>
+        <MenuItem>
+          <EditIcon />
+          Edit post
+        </MenuItem>
+        <MenuItem>
+          <RemoveCircleOutlineIcon /> Remove post
+        </MenuItem>
+        <MenuItem>
+          <DeleteIcon /> Permanent Delete
+        </MenuItem>
+        <MenuItem>
+          <UnpublishedIcon /> Unpublish post
+        </MenuItem>
+        <MenuItem>
+          <PeopleAltIcon /> Edit audience
+        </MenuItem>
+      </MuiMenu>
       <StyledProfileContainer>
         <StyledDivItem>
           <StyledUserSummaryHeader>
@@ -106,30 +217,9 @@ const UserProfile = () => {
           </StyledProfileTabs>
           <TabPanel value={value} index={0}>
             <StyledUserPosts>
-              {postData.map((post, i) => {
-                return (
-                  <StyledPostItem key={post.id} isFirstElement={i === 0}>
-                    <StyledPostHeader>
-                      <StyledDivItem>
-                        <StyledPostUserInfo>
-                          <StyledDivItem>
-                            <img src={post.postedBy.avatar} alt="" />
-                          </StyledDivItem>
-                          <StyledDivItem>
-                            <H3>{post.postedBy.name}</H3>
-                            <P1>
-                              {post.postedBy.emailAddress} -{' '}
-                              {new Date(post.postedAt).getFullYear()}
-                            </P1>
-                          </StyledDivItem>
-                        </StyledPostUserInfo>
-                      </StyledDivItem>
-                      <StyledDivItem>
-                        <MoreVertIcon />
-                      </StyledDivItem>
-                    </StyledPostHeader>
-                  </StyledPostItem>
-                );
+              {postData.map((post) => {
+                console.log(post);
+                return <p key={post.id}>asdasd</p>;
               })}
             </StyledUserPosts>
           </TabPanel>
