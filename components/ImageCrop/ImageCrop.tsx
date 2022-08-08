@@ -24,7 +24,6 @@ const ImageCrop: React.FC<IImageCropProps> = ({
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     if (!aspect) return;
     const { width, height } = e.currentTarget;
-    console.log(aspect);
     setInitialCrop(centerAspectCrop(width, height, aspect));
     if (aspect === 1) setIsImagePortrait(width <= height);
   }

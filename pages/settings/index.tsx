@@ -1,11 +1,11 @@
 import React from 'react';
 import ProfileLayout from 'layouts/ProfileLayout/ProfileLayout';
-import ProfileDetails from 'containers/Profile/ProfileDetails/ProfileDetails';
+import UserSettings from 'containers/Settings/UserSettings';
 
 const Profile = () => {
   return (
     <ProfileLayout>
-      <ProfileDetails />
+      <UserSettings />
     </ProfileLayout>
   );
 };
