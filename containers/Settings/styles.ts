@@ -1,11 +1,14 @@
 import { FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
-import Divider from '@mui/material/Divider';
-import InputForm from 'components/Form/InputForm/InputForm';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
+import Divider from '@mui/material/Divider';
 
 interface IStyledDPWrappper {
   isPreview?: boolean;
+}
+
+interface IDividerProps {
+  isFieldDivider?: boolean;
 }
 
 export const StyledDetailWrapper = styled(FormProvider)``;
@@ -88,18 +91,26 @@ export const StyledFormWrapper = styled.div`
   display: grid;
   place-items: center;
   margin-bottom: 50px;
+  & .highlight {
+    border: 2px dotted rgba(0, 0, 0, 0.8);
+  }
+
+  & div.Mui-disabled {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
 `;
 
 export const StyledFormItemsWrapper = styled.div`
   width: 680px;
+
+  & .MuiFormControl-root {
+    width: 100%;
+  }
 `;
 
-export const StyledDivider = styled(Divider)`
-  margin: 20px 0;
-`;
-
-export const StyledInputForm = styled(InputForm)`
-  width: 100%;
+export const StyledDivider = styled(Divider)<IDividerProps>`
+  margin: ${({ isFieldDivider }) =>
+    !isFieldDivider ? '20px 0px' : '0px 0px 20px'};
 `;
 
 export const StyledPhotoDropzone = styled.div`

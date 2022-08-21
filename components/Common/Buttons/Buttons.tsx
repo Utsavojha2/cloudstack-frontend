@@ -40,15 +40,17 @@ export const MuiPrimaryButton = styled(
   }}
 `;
 
-export const MuiSecondaryButton = styled(({ ...rest }) => (
-  <Button
-    disableElevation
-    variant="outlined"
-    color="primary"
-    size="medium"
-    {...rest}
-  />
-))`
+export const MuiSecondaryButton = styled(
+  ({ ...rest }: ComponentProps<typeof Button>) => (
+    <Button
+      disableElevation
+      variant="outlined"
+      color="primary"
+      size="medium"
+      {...rest}
+    />
+  )
+)`
   ${({ theme }) => {
     return `
     background-color: ${theme.palette.common.white};

@@ -98,7 +98,12 @@ const Login = () => {
               name="confirm_password"
               type="password"
             />
-            <DatePicker label={translateText('birthDate')} name="birthDate" />
+            <DatePicker
+              label={translateText('birthDate')}
+              name="birthDate"
+              openTo="year"
+              disableFuture
+            />
             <MuiPrimaryButton type="submit">
               <LoginOutlinedIcon sx={{ mr: 1 }} />
               {translateText('registerAccount')}

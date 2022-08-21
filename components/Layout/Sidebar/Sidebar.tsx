@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import {
-  Box,
   Divider,
   Grid,
   IconButton,
@@ -15,11 +14,7 @@ import {
 } from '@mui/material';
 import CopyrightIcon from '@mui/icons-material/Copyright';
 import { CloseOutlined } from '@mui/icons-material';
-import {
-  MuiPrimaryButton,
-  MuiSecondaryButton,
-} from 'components/Common/Buttons/Buttons';
-import AlertDialogSlide from 'components/Common/AlertDialog/AlertDialog';
+import ConfirmationModal from 'components/Common/ConfirmationModal/ConfirmationModal';
 import { H1, H2, H3, P1, P2 } from 'components/Common/Typography/Typography';
 import { navigationItems } from 'components/Layout/Sidebar/helpers';
 import * as Styled from 'components/Layout/Sidebar/Sidebar.styles';
@@ -28,6 +23,7 @@ import { axiosInstance } from 'config/axios.config';
 import { ToastContext } from 'config/toast.context';
 import useAppContext from 'config/app.context';
 import { FeedContext } from 'config/feed.context';
+import Link from 'next/link';
 
 const Sidebar: React.FC = () => {
   const router = useRouter();
@@ -123,19 +119,22 @@ const Sidebar: React.FC = () => {
       <Toolbar />
       <Divider />
       <List>
-        {navigationItems.map(({ name, icon: ItemIcon, isAsyncAction }) => (
-          <ListItem
-            button
-            key={name}
-            sx={{ px: 5 }}
-            onClick={() => setIsModalOpen(!!isAsyncAction)}
-          >
-            <ListItemIcon sx={{ minWidth: '40px' }}>
-              <ItemIcon />
-            </ListItemIcon>
-            <ListItemText primary={name} />
-          </ListItem>
-        ))}
+        {navigationItems.map(
+          ({ name, icon: ItemIcon, isAsyncAction, href }) => (
+            <Link href={href ?? router.asPath} key={name} passHref>
+              <ListItem
+                button
+                sx={{ px: 5 }}
+                onClick={() => setIsModalOpen(!!isAsyncAction)}
+              >
+                <ListItemIcon sx={{ minWidth: '40px' }}>
+                  <ItemIcon />
+                </ListItemIcon>
+                <ListItemText primary={name} />
+              </ListItem>
+            </Link>
+          )
+        )}
       </List>
       <Divider />
       <Grid container justifyContent="cente" sx={{ mt: 'auto', mb: 2 }}>
@@ -150,24 +149,13 @@ const Sidebar: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <AlertDialogSlide
+      <ConfirmationModal
         isOpen={isModalOpen}
         handleClose={() => setIsModalOpen(false)}
         title="Are you sure you want to logout?"
         contentMessage="You will be logged out of the application and insert in your credentials again if you want to log in."
-        renderDialogActions={() => (
-          <Box sx={{ pb: 1 }}>
-            <MuiSecondaryButton
-              onClick={() => setIsModalOpen(false)}
-              sx={{ mr: 2 }}
-            >
-              Cancel
-            </MuiSecondaryButton>
-            <MuiPrimaryButton onClick={() => mutate()} sx={{ mr: 3 }}>
-              Logout
-            </MuiPrimaryButton>
-          </Box>
-        )}
+        confirmText="Logout"
+        onConfirm={() => mutate()}
       />
     </Styled.MuiSidebar>
   );

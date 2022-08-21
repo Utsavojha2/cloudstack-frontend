@@ -13,995 +13,995 @@ export const getFlagUri = (countryCode: string) => {
 
 export const countries = [
   {
-    code: 'AD',
     label: 'Andorra',
+    value: 'AD',
   },
   {
-    code: 'AE',
     label: 'United Arab Emirates',
+    value: 'AE',
   },
   {
-    code: 'AF',
     label: 'Afghanistan',
+    value: 'AF',
   },
   {
-    code: 'AG',
     label: 'Antigua and Barbuda',
+    value: 'AG',
   },
   {
-    code: 'AI',
     label: 'Anguilla',
+    value: 'AI',
   },
   {
-    code: 'AL',
     label: 'Albania',
+    value: 'AL',
   },
   {
-    code: 'AM',
     label: 'Armenia',
+    value: 'AM',
   },
   {
-    code: 'AO',
     label: 'Angola',
+    value: 'AO',
   },
   {
-    code: 'AQ',
     label: 'Antarctica',
+    value: 'AQ',
   },
   {
-    code: 'AR',
     label: 'Argentina',
+    value: 'AR',
   },
   {
-    code: 'AS',
     label: 'American Samoa',
+    value: 'AS',
   },
   {
-    code: 'AT',
     label: 'Austria',
+    value: 'AT',
   },
   {
-    code: 'AU',
     label: 'Australia',
+    value: 'AU',
   },
   {
-    code: 'AW',
     label: 'Aruba',
+    value: 'AW',
   },
   {
-    code: 'AX',
     label: 'Alland Islands',
+    value: 'AX',
   },
   {
-    code: 'AZ',
     label: 'Azerbaijan',
+    value: 'AZ',
   },
   {
-    code: 'BA',
     label: 'Bosnia and Herzegovina',
+    value: 'BA',
   },
   {
-    code: 'BB',
     label: 'Barbados',
+    value: 'BB',
   },
   {
-    code: 'BD',
     label: 'Bangladesh',
+    value: 'BD',
   },
   {
-    code: 'BE',
     label: 'Belgium',
+    value: 'BE',
   },
   {
-    code: 'BF',
     label: 'Burkina Faso',
+    value: 'BF',
   },
   {
-    code: 'BG',
     label: 'Bulgaria',
+    value: 'BG',
   },
   {
-    code: 'BH',
     label: 'Bahrain',
+    value: 'BH',
   },
   {
-    code: 'BI',
     label: 'Burundi',
+    value: 'BI',
   },
   {
-    code: 'BJ',
     label: 'Benin',
+    value: 'BJ',
   },
   {
-    code: 'BL',
     label: 'Saint Barthelemy',
+    value: 'BL',
   },
   {
-    code: 'BM',
     label: 'Bermuda',
+    value: 'BM',
   },
   {
-    code: 'BN',
     label: 'Brunei Darussalam',
+    value: 'BN',
   },
   {
-    code: 'BO',
     label: 'Bolivia',
+    value: 'BO',
   },
   {
-    code: 'BR',
     label: 'Brazil',
+    value: 'BR',
   },
   {
-    code: 'BS',
     label: 'Bahamas',
+    value: 'BS',
   },
   {
-    code: 'BT',
     label: 'Bhutan',
+    value: 'BT',
   },
   {
-    code: 'BV',
     label: 'Bouvet Island',
+    value: 'BV',
   },
   {
-    code: 'BW',
     label: 'Botswana',
+    value: 'BW',
   },
   {
-    code: 'BY',
     label: 'Belarus',
+    value: 'BY',
   },
   {
-    code: 'BZ',
     label: 'Belize',
+    value: 'BZ',
   },
   {
-    code: 'CA',
     label: 'Canada',
+    value: 'CA',
   },
   {
-    code: 'CC',
     label: 'Cocos (Keeling) Islands',
+    value: 'CC',
   },
   {
-    code: 'CD',
     label: 'Congo, Democratic Republic of the',
+    value: 'CD',
   },
   {
-    code: 'CF',
     label: 'Central African Republic',
+    value: 'CF',
   },
   {
-    code: 'CG',
     label: 'Congo, Republic of the',
+    value: 'CG',
   },
   {
-    code: 'CH',
     label: 'Switzerland',
+    value: 'CH',
   },
   {
-    code: 'CI',
     label: "Cote d'Ivoire",
+    value: 'CI',
   },
   {
-    code: 'CK',
     label: 'Cook Islands',
+    value: 'CK',
   },
   {
-    code: 'CL',
     label: 'Chile',
+    value: 'CL',
   },
   {
-    code: 'CM',
     label: 'Cameroon',
+    value: 'CM',
   },
   {
-    code: 'CN',
     label: 'China',
+    value: 'CN',
   },
   {
-    code: 'CO',
     label: 'Colombia',
+    value: 'CO',
   },
   {
-    code: 'CR',
     label: 'Costa Rica',
+    value: 'CR',
   },
   {
-    code: 'CU',
     label: 'Cuba',
+    value: 'CU',
   },
   {
-    code: 'CV',
     label: 'Cape Verde',
+    value: 'CV',
   },
   {
-    code: 'CW',
     label: 'Curacao',
+    value: 'CW',
   },
   {
-    code: 'CX',
     label: 'Christmas Island',
+    value: 'CX',
   },
   {
-    code: 'CY',
     label: 'Cyprus',
+    value: 'CY',
   },
   {
-    code: 'CZ',
     label: 'Czech Republic',
+    value: 'CZ',
   },
   {
-    code: 'DE',
     label: 'Germany',
+    value: 'DE',
   },
   {
-    code: 'DJ',
     label: 'Djibouti',
+    value: 'DJ',
   },
   {
-    code: 'DK',
     label: 'Denmark',
+    value: 'DK',
   },
   {
-    code: 'DM',
     label: 'Dominica',
+    value: 'DM',
   },
   {
-    code: 'DO',
     label: 'Dominican Republic',
+    value: 'DO',
   },
   {
-    code: 'DZ',
     label: 'Algeria',
+    value: 'DZ',
   },
   {
-    code: 'EC',
     label: 'Ecuador',
+    value: 'EC',
   },
   {
-    code: 'EE',
     label: 'Estonia',
+    value: 'EE',
   },
   {
-    code: 'EG',
     label: 'Egypt',
+    value: 'EG',
   },
   {
-    code: 'EH',
     label: 'Western Sahara',
+    value: 'EH',
   },
   {
-    code: 'ER',
     label: 'Eritrea',
+    value: 'ER',
   },
   {
-    code: 'ES',
     label: 'Spain',
+    value: 'ES',
   },
   {
-    code: 'ET',
     label: 'Ethiopia',
+    value: 'ET',
   },
   {
-    code: 'FI',
     label: 'Finland',
+    value: 'FI',
   },
   {
-    code: 'FJ',
     label: 'Fiji',
+    value: 'FJ',
   },
   {
-    code: 'FK',
     label: 'Falkland Islands (Malvinas)',
+    value: 'FK',
   },
   {
-    code: 'FM',
     label: 'Micronesia, Federated States of',
+    value: 'FM',
   },
   {
-    code: 'FO',
     label: 'Faroe Islands',
+    value: 'FO',
   },
   {
-    code: 'FR',
     label: 'France',
+    value: 'FR',
   },
   {
-    code: 'GA',
     label: 'Gabon',
+    value: 'GA',
   },
   {
-    code: 'GB',
     label: 'United Kingdom',
+    value: 'GB',
   },
   {
-    code: 'GD',
     label: 'Grenada',
+    value: 'GD',
   },
   {
-    code: 'GE',
     label: 'Georgia',
+    value: 'GE',
   },
   {
-    code: 'GF',
     label: 'French Guiana',
+    value: 'GF',
   },
   {
-    code: 'GG',
     label: 'Guernsey',
+    value: 'GG',
   },
   {
-    code: 'GH',
     label: 'Ghana',
+    value: 'GH',
   },
   {
-    code: 'GI',
     label: 'Gibraltar',
+    value: 'GI',
   },
   {
-    code: 'GL',
     label: 'Greenland',
+    value: 'GL',
   },
   {
-    code: 'GM',
     label: 'Gambia',
+    value: 'GM',
   },
   {
-    code: 'GN',
     label: 'Guinea',
+    value: 'GN',
   },
   {
-    code: 'GP',
     label: 'Guadeloupe',
+    value: 'GP',
   },
   {
-    code: 'GQ',
     label: 'Equatorial Guinea',
+    value: 'GQ',
   },
   {
-    code: 'GR',
     label: 'Greece',
+    value: 'GR',
   },
   {
-    code: 'GS',
     label: 'South Georgia and the South Sandwich Islands',
+    value: 'GS',
   },
   {
-    code: 'GT',
     label: 'Guatemala',
+    value: 'GT',
   },
   {
-    code: 'GU',
     label: 'Guam',
+    value: 'GU',
   },
   {
-    code: 'GW',
     label: 'Guinea-Bissau',
+    value: 'GW',
   },
   {
-    code: 'GY',
     label: 'Guyana',
+    value: 'GY',
   },
   {
-    code: 'HK',
     label: 'Hong Kong',
+    value: 'HK',
   },
   {
-    code: 'HM',
     label: 'Heard Island and McDonald Islands',
+    value: 'HM',
   },
   {
-    code: 'HN',
     label: 'Honduras',
+    value: 'HN',
   },
   {
-    code: 'HR',
     label: 'Croatia',
+    value: 'HR',
   },
   {
-    code: 'HT',
     label: 'Haiti',
+    value: 'HT',
   },
   {
-    code: 'HU',
     label: 'Hungary',
+    value: 'HU',
   },
   {
-    code: 'ID',
     label: 'Indonesia',
+    value: 'ID',
   },
   {
-    code: 'IE',
     label: 'Ireland',
+    value: 'IE',
   },
   {
-    code: 'IL',
     label: 'Israel',
+    value: 'IL',
   },
   {
-    code: 'IM',
     label: 'Isle of Man',
+    value: 'IM',
   },
   {
-    code: 'IN',
     label: 'India',
+    value: 'IN',
   },
   {
-    code: 'IO',
     label: 'British Indian Ocean Territory',
+    value: 'IO',
   },
   {
-    code: 'IQ',
     label: 'Iraq',
+    value: 'IQ',
   },
   {
-    code: 'IR',
     label: 'Iran, Islamic Republic of',
+    value: 'IR',
   },
   {
-    code: 'IS',
     label: 'Iceland',
+    value: 'IS',
   },
   {
-    code: 'IT',
     label: 'Italy',
+    value: 'IT',
   },
   {
-    code: 'JE',
     label: 'Jersey',
+    value: 'JE',
   },
   {
-    code: 'JM',
     label: 'Jamaica',
+    value: 'JM',
   },
   {
-    code: 'JO',
     label: 'Jordan',
+    value: 'JO',
   },
   {
-    code: 'JP',
     label: 'Japan',
+    value: 'JP',
   },
   {
-    code: 'KE',
     label: 'Kenya',
+    value: 'KE',
   },
   {
-    code: 'KG',
     label: 'Kyrgyzstan',
+    value: 'KG',
   },
   {
-    code: 'KH',
     label: 'Cambodia',
+    value: 'KH',
   },
   {
-    code: 'KI',
     label: 'Kiribati',
+    value: 'KI',
   },
   {
-    code: 'KM',
     label: 'Comoros',
+    value: 'KM',
   },
   {
-    code: 'KN',
     label: 'Saint Kitts and Nevis',
+    value: 'KN',
   },
   {
-    code: 'KP',
     label: "Korea, Democratic People's Republic of",
+    value: 'KP',
   },
   {
-    code: 'KR',
     label: 'Korea, Republic of',
+    value: 'KR',
   },
   {
-    code: 'KW',
     label: 'Kuwait',
+    value: 'KW',
   },
   {
-    code: 'KY',
     label: 'Cayman Islands',
+    value: 'KY',
   },
   {
-    code: 'KZ',
     label: 'Kazakhstan',
+    value: 'KZ',
   },
   {
-    code: 'LA',
     label: "Lao People's Democratic Republic",
+    value: 'LA',
   },
   {
-    code: 'LB',
     label: 'Lebanon',
+    value: 'LB',
   },
   {
-    code: 'LC',
     label: 'Saint Lucia',
+    value: 'LC',
   },
   {
-    code: 'LI',
     label: 'Liechtenstein',
+    value: 'LI',
   },
   {
-    code: 'LK',
     label: 'Sri Lanka',
+    value: 'LK',
   },
   {
-    code: 'LR',
     label: 'Liberia',
+    value: 'LR',
   },
   {
-    code: 'LS',
     label: 'Lesotho',
+    value: 'LS',
   },
   {
-    code: 'LT',
     label: 'Lithuania',
+    value: 'LT',
   },
   {
-    code: 'LU',
     label: 'Luxembourg',
+    value: 'LU',
   },
   {
-    code: 'LV',
     label: 'Latvia',
+    value: 'LV',
   },
   {
-    code: 'LY',
     label: 'Libya',
+    value: 'LY',
   },
   {
-    code: 'MA',
     label: 'Morocco',
+    value: 'MA',
   },
   {
-    code: 'MC',
     label: 'Monaco',
+    value: 'MC',
   },
   {
-    code: 'MD',
     label: 'Moldova, Republic of',
+    value: 'MD',
   },
   {
-    code: 'ME',
     label: 'Montenegro',
+    value: 'ME',
   },
   {
-    code: 'MF',
     label: 'Saint Martin (French part)',
+    value: 'MF',
   },
   {
-    code: 'MG',
     label: 'Madagascar',
+    value: 'MG',
   },
   {
-    code: 'MH',
     label: 'Marshall Islands',
+    value: 'MH',
   },
   {
-    code: 'MK',
     label: 'Macedonia, the Former Yugoslav Republic of',
+    value: 'MK',
   },
   {
-    code: 'ML',
     label: 'Mali',
+    value: 'ML',
   },
   {
-    code: 'MM',
     label: 'Myanmar',
+    value: 'MM',
   },
   {
-    code: 'MN',
     label: 'Mongolia',
+    value: 'MN',
   },
   {
-    code: 'MO',
     label: 'Macao',
+    value: 'MO',
   },
   {
-    code: 'MP',
     label: 'Northern Mariana Islands',
+    value: 'MP',
   },
   {
-    code: 'MQ',
     label: 'Martinique',
+    value: 'MQ',
   },
   {
-    code: 'MR',
     label: 'Mauritania',
+    value: 'MR',
   },
   {
-    code: 'MS',
     label: 'Montserrat',
+    value: 'MS',
   },
   {
-    code: 'MT',
     label: 'Malta',
+    value: 'MT',
   },
   {
-    code: 'MU',
     label: 'Mauritius',
+    value: 'MU',
   },
   {
-    code: 'MV',
     label: 'Maldives',
+    value: 'MV',
   },
   {
-    code: 'MW',
     label: 'Malawi',
+    value: 'MW',
   },
   {
-    code: 'MX',
     label: 'Mexico',
+    value: 'MX',
   },
   {
-    code: 'MY',
     label: 'Malaysia',
+    value: 'MY',
   },
   {
-    code: 'MZ',
     label: 'Mozambique',
+    value: 'MZ',
   },
   {
-    code: 'NA',
     label: 'Namibia',
+    value: 'NA',
   },
   {
-    code: 'NC',
     label: 'New Caledonia',
+    value: 'NC',
   },
   {
-    code: 'NE',
     label: 'Niger',
+    value: 'NE',
   },
   {
-    code: 'NF',
     label: 'Norfolk Island',
+    value: 'NF',
   },
   {
-    code: 'NG',
     label: 'Nigeria',
+    value: 'NG',
   },
   {
-    code: 'NI',
     label: 'Nicaragua',
+    value: 'NI',
   },
   {
-    code: 'NL',
     label: 'Netherlands',
+    value: 'NL',
   },
   {
-    code: 'NO',
     label: 'Norway',
+    value: 'NO',
   },
   {
-    code: 'NP',
     label: 'Nepal',
+    value: 'NP',
   },
   {
-    code: 'NR',
     label: 'Nauru',
+    value: 'NR',
   },
   {
-    code: 'NU',
     label: 'Niue',
+    value: 'NU',
   },
   {
-    code: 'NZ',
     label: 'New Zealand',
+    value: 'NZ',
   },
   {
-    code: 'OM',
     label: 'Oman',
+    value: 'OM',
   },
   {
-    code: 'PA',
     label: 'Panama',
+    value: 'PA',
   },
   {
-    code: 'PE',
     label: 'Peru',
+    value: 'PE',
   },
   {
-    code: 'PF',
     label: 'French Polynesia',
+    value: 'PF',
   },
   {
-    code: 'PG',
     label: 'Papua New Guinea',
+    value: 'PG',
   },
   {
-    code: 'PH',
     label: 'Philippines',
+    value: 'PH',
   },
   {
-    code: 'PK',
     label: 'Pakistan',
+    value: 'PK',
   },
   {
-    code: 'PL',
     label: 'Poland',
+    value: 'PL',
   },
   {
-    code: 'PM',
     label: 'Saint Pierre and Miquelon',
+    value: 'PM',
   },
   {
-    code: 'PN',
     label: 'Pitcairn',
+    value: 'PN',
   },
   {
-    code: 'PR',
     label: 'Puerto Rico',
+    value: 'PR',
   },
   {
-    code: 'PS',
     label: 'Palestine, State of',
+    value: 'PS',
   },
   {
-    code: 'PT',
     label: 'Portugal',
+    value: 'PT',
   },
   {
-    code: 'PW',
     label: 'Palau',
+    value: 'PW',
   },
   {
-    code: 'PY',
     label: 'Paraguay',
+    value: 'PY',
   },
   {
-    code: 'QA',
     label: 'Qatar',
+    value: 'QA',
   },
   {
-    code: 'RE',
     label: 'Reunion',
+    value: 'RE',
   },
   {
-    code: 'RO',
     label: 'Romania',
+    value: 'RO',
   },
   {
-    code: 'RS',
     label: 'Serbia',
+    value: 'RS',
   },
   {
-    code: 'RU',
     label: 'Russian Federation',
+    value: 'RU',
   },
   {
-    code: 'RW',
     label: 'Rwanda',
+    value: 'RW',
   },
   {
-    code: 'SA',
     label: 'Saudi Arabia',
+    value: 'SA',
   },
   {
-    code: 'SB',
     label: 'Solomon Islands',
+    value: 'SB',
   },
   {
-    code: 'SC',
     label: 'Seychelles',
+    value: 'SC',
   },
   {
-    code: 'SD',
     label: 'Sudan',
+    value: 'SD',
   },
   {
-    code: 'SE',
     label: 'Sweden',
+    value: 'SE',
   },
   {
-    code: 'SG',
     label: 'Singapore',
+    value: 'SG',
   },
   {
-    code: 'SH',
     label: 'Saint Helena',
+    value: 'SH',
   },
   {
-    code: 'SI',
     label: 'Slovenia',
+    value: 'SI',
   },
   {
-    code: 'SJ',
     label: 'Svalbard and Jan Mayen',
+    value: 'SJ',
   },
   {
-    code: 'SK',
     label: 'Slovakia',
+    value: 'SK',
   },
   {
-    code: 'SL',
     label: 'Sierra Leone',
+    value: 'SL',
   },
   {
-    code: 'SM',
     label: 'San Marino',
+    value: 'SM',
   },
   {
-    code: 'SN',
     label: 'Senegal',
+    value: 'SN',
   },
   {
-    code: 'SO',
     label: 'Somalia',
+    value: 'SO',
   },
   {
-    code: 'SR',
     label: 'Suriname',
+    value: 'SR',
   },
   {
-    code: 'SS',
     label: 'South Sudan',
+    value: 'SS',
   },
   {
-    code: 'ST',
     label: 'Sao Tome and Principe',
+    value: 'ST',
   },
   {
-    code: 'SV',
     label: 'El Salvador',
+    value: 'SV',
   },
   {
-    code: 'SX',
     label: 'Sint Maarten (Dutch part)',
+    value: 'SX',
   },
   {
-    code: 'SY',
     label: 'Syrian Arab Republic',
+    value: 'SY',
   },
   {
-    code: 'SZ',
     label: 'Swaziland',
+    value: 'SZ',
   },
   {
-    code: 'TC',
     label: 'Turks and Caicos Islands',
+    value: 'TC',
   },
   {
-    code: 'TD',
     label: 'Chad',
+    value: 'TD',
   },
   {
-    code: 'TF',
     label: 'French Southern Territories',
+    value: 'TF',
   },
   {
-    code: 'TG',
     label: 'Togo',
+    value: 'TG',
   },
   {
-    code: 'TH',
     label: 'Thailand',
+    value: 'TH',
   },
   {
-    code: 'TJ',
     label: 'Tajikistan',
+    value: 'TJ',
   },
   {
-    code: 'TK',
     label: 'Tokelau',
+    value: 'TK',
   },
   {
-    code: 'TL',
     label: 'Timor-Leste',
+    value: 'TL',
   },
   {
-    code: 'TM',
     label: 'Turkmenistan',
+    value: 'TM',
   },
   {
-    code: 'TN',
     label: 'Tunisia',
+    value: 'TN',
   },
   {
-    code: 'TO',
     label: 'Tonga',
+    value: 'TO',
   },
   {
-    code: 'TR',
     label: 'Turkey',
+    value: 'TR',
   },
   {
-    code: 'TT',
     label: 'Trinidad and Tobago',
+    value: 'TT',
   },
   {
-    code: 'TV',
     label: 'Tuvalu',
+    value: 'TV',
   },
   {
-    code: 'TW',
     label: 'Taiwan, Province of China',
+    value: 'TW',
   },
   {
-    code: 'TZ',
     label: 'United Republic of Tanzania',
+    value: 'TZ',
   },
   {
-    code: 'UA',
     label: 'Ukraine',
+    value: 'UA',
   },
   {
-    code: 'UG',
     label: 'Uganda',
+    value: 'UG',
   },
   {
-    code: 'US',
     label: 'United States',
+    value: 'US',
   },
   {
-    code: 'UY',
     label: 'Uruguay',
+    value: 'UY',
   },
   {
-    code: 'UZ',
     label: 'Uzbekistan',
+    value: 'UZ',
   },
   {
-    code: 'VA',
     label: 'Holy See (Vatican City State)',
+    value: 'VA',
   },
   {
-    code: 'VC',
     label: 'Saint Vincent and the Grenadines',
+    value: 'VC',
   },
   {
-    code: 'VE',
     label: 'Venezuela',
+    value: 'VE',
   },
   {
-    code: 'VG',
     label: 'British Virgin Islands',
+    value: 'VG',
   },
   {
-    code: 'VI',
     label: 'US Virgin Islands',
+    value: 'VI',
   },
   {
-    code: 'VN',
     label: 'Vietnam',
+    value: 'VN',
   },
   {
-    code: 'VU',
     label: 'Vanuatu',
+    value: 'VU',
   },
   {
-    code: 'WF',
     label: 'Wallis and Futuna',
+    value: 'WF',
   },
   {
-    code: 'WS',
     label: 'Samoa',
+    value: 'WS',
   },
   {
-    code: 'XK',
     label: 'Kosovo',
+    value: 'XK',
   },
   {
-    code: 'YE',
     label: 'Yemen',
+    value: 'YE',
   },
   {
-    code: 'YT',
     label: 'Mayotte',
+    value: 'YT',
   },
   {
-    code: 'ZA',
     label: 'South Africa',
+    value: 'ZA',
   },
   {
-    code: 'ZM',
     label: 'Zambia',
+    value: 'ZM',
   },
   {
-    code: 'ZW',
     label: 'Zimbabwe',
+    value: 'ZW',
   },
 ];

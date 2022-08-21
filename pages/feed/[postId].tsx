@@ -1,7 +1,13 @@
-import React from 'react'
+import { useRouter } from 'next/router';
+import React from 'react';
 
 const UserPost = () => {
-  return <div>UserPost</div>
-}
+  const router = useRouter();
 
-export default UserPost
+  console.log(router);
+  return <div>UserPost</div>;
+};
+
+UserPost.isGuestPage = true;
+
+export default UserPost;

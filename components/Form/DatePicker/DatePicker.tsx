@@ -1,27 +1,26 @@
 import React from 'react';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import { DatePickerProps } from '@mui/lab/DatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Controller, useFormContext } from 'react-hook-form';
 import { TextField } from '@mui/material';
 import { FormItemProps } from 'types/app';
 
-type DatePickerProps = FormItemProps;
+type IDatePickerProps = FormItemProps & Partial<DatePickerProps>;
 
-const DatePicker: React.FC<DatePickerProps> = ({ name, label }) => {
+const DatePicker: React.FC<IDatePickerProps> = ({ name, label, ...props }) => {
   const { control } = useFormContext();
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Controller
-        render={({
-          field: { value, onChange },
-          fieldState: { invalid, error },
-        }) => (
+        render={({ field, fieldState: { invalid, error } }) => (
           <DesktopDatePicker
+            {...props}
             label={label}
             inputFormat="MM/dd/yyyy"
-            value={value ?? ''}
-            onChange={onChange}
+            {...field}
+            value={field.value || ''}
             renderInput={(params) => (
               <TextField
                 {...params}
