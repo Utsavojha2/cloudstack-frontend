@@ -36,8 +36,8 @@ npm run test
 - Set up integration and unit tests with Jest and React Testing Library
 - Signup/Login UI design
 - Authentication integration with Node.js
-- Feed UI design (IN PROGRESS)
-- Setup End to end tests with Cypress (IN PROGRESS)
+- Feed UI
+- Image upload with Cloudinary
 
 ## Learn More
 
