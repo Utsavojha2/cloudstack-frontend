@@ -226,6 +226,7 @@ const UserSettings = () => {
               maxHeight={200}
               aspect={1}
               locked
+              onClose={onModalClose}
             />
           </CustomModal>
         )}
@@ -236,6 +237,7 @@ const UserSettings = () => {
               keepSelection
               locked
               aspect={16 / 9}
+              onClose={onModalClose}
             />
           </CustomModal>
         )}

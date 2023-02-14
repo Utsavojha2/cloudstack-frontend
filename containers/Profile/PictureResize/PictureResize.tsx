@@ -11,10 +11,12 @@ import * as Button from 'components/Common/Buttons/Buttons';
 
 interface IPictureResizeProps extends Partial<ReactCropProps> {
   imageSrc: string;
+  onClose(): void;
 }
 
 const PictureResize: React.FC<IPictureResizeProps> = ({
   imageSrc,
+  onClose,
   ...props
 }) => {
   const { control, watch } = useFormContext();
@@ -47,7 +49,7 @@ const PictureResize: React.FC<IPictureResizeProps> = ({
         <InsertPhotoIcon />
       </StyledImageScaler>
       <StyledActionButtons>
-        <Button.MuiSecondaryButton>Cancel</Button.MuiSecondaryButton>
+        <Button.MuiSecondaryButton onClick={onClose}>Cancel</Button.MuiSecondaryButton>
         <Button.MuiPrimaryButton>Save Crop</Button.MuiPrimaryButton>
       </StyledActionButtons>
     </StyledPictureResize>

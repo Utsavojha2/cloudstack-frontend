@@ -24,6 +24,8 @@ import * as Button from 'components/Common/Buttons/Buttons';
 import TabPanel from 'components/Common/TabPanel/TabPanel';
 import { H2, H3, P1 } from 'components/Common/Typography/Typography';
 import MuiMenu from './Menu';
+import { employmentData, profileTabs, postData } from './data';
+import 'react-slideshow-image/dist/styles.css';
 import {
   StyledProfileWrapper,
   StyledProfileContainer,
@@ -50,8 +52,6 @@ import {
   StyledPostCommentInput,
   StyledMuiTextArea,
 } from 'containers/Profile/UserProfile/UserProfile.styles';
-import { employmentData, profileTabs, postData } from './data';
-import 'react-slideshow-image/dist/styles.css';
 
 const Slider = dynamic(() => import('./Slider'), {
   ssr: false,
@@ -77,7 +77,7 @@ const UserProfile = () => {
     return (
       <StyledPostItem key={post.id} isFirstElement={i === 0}>
         <StyledPostHeader>
-          <StyledDivItem>  
+          <StyledDivItem>
             <StyledPostUserInfo>
               <StyledDivItem>
                 {/* <img src={post.postedBy.avatar} alt="" />
