@@ -7,6 +7,10 @@
 - [Styled Components](https://styled-components.com/)
 - [React Hook Form](https://react-hook-form.com/)
 
+## App screenshots
+![image](https://github.com/Utsavojha2/cloudstack-frontend/assets/68552321/7125e905-0f84-40ee-9c16-68dc879e5e87)
+
+
 ## Getting Started
 
 First, run the development server:
