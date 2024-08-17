@@ -1,12 +1,14 @@
-import { Photo } from 'react-photo-album';
-import { IUser } from 'types/auth';
 
-export interface ICustomPhoto extends Photo {
+export interface IPost {
   id: string;
+  content: string;
   coverPostUri: string;
   likes: number;
   comments: number;
-  user: IUser;
+  user: {
+    id: string;
+    name: string;
+  };
 }
 
 export interface IFeedPostProps {

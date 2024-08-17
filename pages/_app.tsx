@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { isArray } from 'lodash';
@@ -54,17 +55,11 @@ export default function MyApp({ Component, pageProps }: IAppProps) {
     });
   }, [accessToken]);
 
-  const setToken = (token: ITokenType) => {
-    setAccessToken(token);
-  };
-
-  const resetErrorMessage = () => setError(null);
-
   const renewAccessToken = async () => {
     const tokenData = await axiosInstance.get<ITokenPayload>(
       '/v1/api/refresh-token'
     );
-    setToken(tokenData.data.accessToken);
+    setAccessToken(tokenData.data.accessToken);
   };
 
   const queryClient = useMemo(() => {
@@ -126,7 +121,7 @@ export default function MyApp({ Component, pageProps }: IAppProps) {
             key={`${msg.errormessage}-${idx.toString()}`}
             open
             toastMessage={msg.errormessage}
-            onClose={resetErrorMessage}
+            onClose={() => setError(null)}
             severity="error"
             style={{
               top: `${msg.top}px`,
@@ -138,7 +133,7 @@ export default function MyApp({ Component, pageProps }: IAppProps) {
     return (
       <Snackbar
         open
-        onClose={resetErrorMessage}
+        onClose={() => setError(null)}
         toastMessage={responseError?.message}
         severity="error"
       />
@@ -172,7 +167,7 @@ export default function MyApp({ Component, pageProps }: IAppProps) {
 
   return (
     <AppContext.Provider value={{ accessToken }}>
-      <AppDispatchContext.Provider value={{ setToken }}>
+      <AppDispatchContext.Provider value={{ setToken: setAccessToken }}>
         <ToastContextProvider>
           <QueryClientProvider client={queryClient}>
             <StyledEngineProvider injectFirst>

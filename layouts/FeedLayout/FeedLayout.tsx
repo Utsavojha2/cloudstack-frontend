@@ -9,8 +9,10 @@ import { FeedContext } from 'config/feed.context';
 
 const UserFeed: React.FC = ({ children }) => {
   const isScreenSizeMedium = useMediaQuery(theme.breakpoints.up('lg'));
-  const [isDrawerOpen, setIsDrawerOpen] = useState(isScreenSizeMedium);
-  const isBackgroundOverlay = isDrawerOpen && !isScreenSizeMedium;
+  const [isDrawerOpen, setIsDrawerOpen] = useState<undefined | boolean>(
+    undefined
+  );
+  const isBackgroundOverlay = (isDrawerOpen ?? true) && !isScreenSizeMedium;
 
   useEffect(() => {
     setIsDrawerOpen(isScreenSizeMedium);
@@ -25,7 +27,7 @@ const UserFeed: React.FC = ({ children }) => {
   };
 
   const providerValues = {
-    isOpen: isDrawerOpen,
+    isOpen: isDrawerOpen ?? true,
     closeDrawer,
     openDrawer,
   };

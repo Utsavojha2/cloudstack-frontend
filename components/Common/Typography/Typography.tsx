@@ -28,7 +28,7 @@ export const H3 = styled(({ ...rest }) => (
   font-weight: 700;
 `;
 export const H4 = styled(({ ...rest }) => (
-  <Typography variant="h4" {...rest} />
+  <Typography variant="h4" {...rest}  />
 ))<IExtraProps>`
   font-weight: 700;
 `;

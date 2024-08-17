@@ -14,7 +14,7 @@ import { ToastContext } from 'config/toast.context';
 
 const EmailVerification = () => {
   const { showMessage } = useAppContext(ToastContext);
-  const { data, isLoading, isError, refetch } = useAuth({ enabled: false });
+  const { data, isLoading, refetch } = useAuth();
 
   const { mutate } = useResendMail(data?.id as string, {
     onSuccess: () => {
@@ -46,12 +46,7 @@ const EmailVerification = () => {
           <Box>
             <MuiPrimaryButton
               onClick={() => mutate()}
-              disabled={
-                isLoading ||
-                isError ||
-                !!data?.is_verified ||
-                !isEligibleForAnotherEmail
-              }
+              disabled={isLoading || !isEligibleForAnotherEmail}
             >
               <MailOutlineOutlined sx={{ mr: 2 }} />
               Resend Email

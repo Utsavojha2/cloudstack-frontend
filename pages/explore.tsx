@@ -1,11 +1,13 @@
 import React from 'react';
-import ProfileLayout from 'layouts/ProfileLayout/ProfileLayout';
+import UserFeedLayout from 'layouts/FeedLayout/FeedLayout';
+import PeopleYouMayKnow from 'containers/UserFeed/PeopleYouMayKnow';
+import { people } from 'containers/UserFeed/helpers';
 
 const Profile = () => {
   return (
-    <ProfileLayout>
-      <h1>asd</h1>
-    </ProfileLayout>
+    <UserFeedLayout>
+      <PeopleYouMayKnow people={people} />
+    </UserFeedLayout>
   );
 };
 
